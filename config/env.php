@@ -35,9 +35,11 @@ if (!function_exists('app_load_env')) {
                 $value = substr($value, 1, -1);
             }
 
-            putenv($name . '=' . $value);
-            $_ENV[$name] = $value;
-            $_SERVER[$name] = $value;
+            if (getenv($name) === false && !isset($_ENV[$name]) && !isset($_SERVER[$name])) {
+                putenv($name . '=' . $value);
+                $_ENV[$name] = $value;
+                $_SERVER[$name] = $value;
+            }
         }
     }
 }
@@ -54,6 +56,23 @@ if (!function_exists('app_env')) {
         }
 
         return trim($default);
+    }
+}
+
+if (!function_exists('app_env_bool')) {
+    function app_env_bool(string $name, bool $default = false): bool
+    {
+        $value = strtolower(app_env($name, $default ? 'true' : 'false'));
+
+        if (in_array($value, ['1', 'true', 'yes', 'on'], true)) {
+            return true;
+        }
+
+        if (in_array($value, ['0', 'false', 'no', 'off'], true)) {
+            return false;
+        }
+
+        return $default;
     }
 }
 

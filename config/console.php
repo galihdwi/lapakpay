@@ -49,6 +49,8 @@ $config = [
                 [
                     'class' => \yii\log\FileTarget::class,
                     'levels' => ['error', 'warning'],
+                    'logFile' => 'php://stderr',
+                    'exportInterval' => 1,
                 ],
             ],
         ],

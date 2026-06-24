@@ -113,6 +113,12 @@ You can then access the application through the following URL:
 
     http://127.0.0.1:8000
 
+Health check lokal:
+
+    http://127.0.0.1:8000/healthz
+
+Jika Docker Compose menampilkan warning seperti `variable is not set` untuk potongan nilai secret, berarti ada value di `.env` yang mengandung karakter `$`. Bungkus value tersebut dengan single quote atau escape `$` menjadi `$$` agar Compose tidak menganggapnya sebagai variable.
+
 Run tests inside the container
 
     docker compose exec -T php vendor/bin/codecept build
@@ -121,6 +127,37 @@ Run tests inside the container
 **NOTES:** 
 - Minimum required Docker engine version `17.04` for development (see [Performance tuning for volume mounts](https://docs.docker.com/docker-for-mac/osxfs-caching/))
 - The default configuration uses a host-volume in your home directory `~/.composer-docker/cache` for Composer caches
+
+## Deploy ke Railway
+
+Project ini bisa langsung memakai Dockerfile. Railway tidak otomatis membaca file `.env` dari repository; isi variable harus ditambahkan lewat **Variables** di dashboard Railway.
+
+Minimal variable yang perlu diisi:
+
+```dotenv
+YII_ENV=prod
+YII_DEBUG=false
+APP_BASE_URL=https://your-app.up.railway.app
+COOKIE_VALIDATION_KEY=isi-dengan-random-string-panjang
+MONGODB_DSN=mongodb://...
+MONGODB_DATABASE=lapakpay
+```
+
+Tambahkan juga credential provider sesuai yang dipakai:
+
+```dotenv
+VIP_RESELLER_API_ID=
+VIP_RESELLER_API_KEY=
+MAYAR_API_KEY=
+FLIP_API_KEY=
+FLIP_VALIDATION_TOKEN=
+```
+
+Catatan:
+- Jangan upload `.env` ke Railway atau commit ke git. File `.env` hanya untuk lokal.
+- Railway akan mengisi `PORT` otomatis; container sudah menjalankan PHP built-in server pada port tersebut.
+- Jika memakai MongoDB Railway, gunakan connection string dari service MongoDB sebagai `MONGODB_DSN`.
+- Buka `/healthz` untuk memastikan container HTTP sudah hidup tanpa menyentuh Yii atau MongoDB.
 
 
 CONFIGURATION

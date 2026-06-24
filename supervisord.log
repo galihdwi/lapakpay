@@ -1,0 +1,26 @@
+2026-06-24 14:22:36,414 INFO Set uid to user 0 succeeded
+2026-06-24 14:22:36,420 INFO supervisord started with pid 1
+2026-06-24 14:22:37,424 INFO spawned: 'cron' with pid 7
+2026-06-24 14:22:37,426 INFO spawned: 'web' with pid 8
+2026-06-24 14:22:38,575 INFO success: cron entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-06-24 14:22:38,575 INFO success: web entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-06-24 14:24:56,981 WARN received SIGQUIT indicating exit request
+2026-06-24 14:24:56,992 INFO waiting for cron, web to die
+2026-06-24 14:24:58,036 INFO stopped: web (exit status 0)
+2026-06-24 14:24:59,042 WARN stopped: cron (terminated by SIGTERM)
+2026-06-24 14:25:00,210 INFO Set uid to user 0 succeeded
+2026-06-24 14:25:00,216 INFO supervisord started with pid 1
+2026-06-24 14:25:01,226 INFO spawned: 'cron' with pid 7
+2026-06-24 14:25:01,230 INFO spawned: 'web' with pid 8
+2026-06-24 14:25:02,301 INFO success: cron entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-06-24 14:25:02,301 INFO success: web entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-06-24 14:26:41,864 WARN received SIGQUIT indicating exit request
+2026-06-24 14:26:41,867 INFO waiting for cron, web to die
+2026-06-24 14:26:42,951 INFO stopped: web (exit status 0)
+2026-06-24 14:26:42,953 WARN stopped: cron (terminated by SIGTERM)
+2026-06-24 14:28:58,685 INFO Set uid to user 0 succeeded
+2026-06-24 14:28:58,690 INFO supervisord started with pid 1
+2026-06-24 14:28:59,699 INFO spawned: 'cron' with pid 7
+2026-06-24 14:28:59,701 INFO spawned: 'web' with pid 8
+2026-06-24 14:29:00,835 INFO success: cron entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-06-24 14:29:00,836 INFO success: web entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)

@@ -26,7 +26,7 @@ $config = [
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-            'cookieValidationKey' => 'Yh192imvkahVRfiZa1egUZVJAKhLZvfK',
+            'cookieValidationKey' => app_env('COOKIE_VALIDATION_KEY', 'Yh192imvkahVRfiZa1egUZVJAKhLZvfK'),
         ],
         'cache' => [
             'class' => \yii\caching\FileCache::class,
@@ -70,6 +70,8 @@ $config = [
                 [
                     'class' => \yii\log\FileTarget::class,
                     'levels' => ['error', 'warning'],
+                    'logFile' => 'php://stderr',
+                    'exportInterval' => 1,
                 ],
             ],
         ],

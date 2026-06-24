@@ -9,6 +9,11 @@ if (!function_exists('app_load_env')) {
         }
 
         $loaded = true;
+
+        if (app_is_railway()) {
+            return;
+        }
+
         $file = dirname(__DIR__) . '/.env';
         if (!is_file($file) || !is_readable($file)) {
             return;
@@ -41,6 +46,19 @@ if (!function_exists('app_load_env')) {
                 $_SERVER[$name] = $value;
             }
         }
+    }
+}
+
+if (!function_exists('app_is_railway')) {
+    function app_is_railway(): bool
+    {
+        foreach (['RAILWAY_ENVIRONMENT', 'RAILWAY_ENVIRONMENT_NAME', 'RAILWAY_PROJECT_ID', 'RAILWAY_SERVICE_ID'] as $name) {
+            if (getenv($name) !== false || isset($_ENV[$name]) || isset($_SERVER[$name])) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
 

@@ -143,6 +143,14 @@ MONGODB_DSN=mongodb://...
 MONGODB_DATABASE=lapakpay
 ```
 
+Jika service MongoDB Railway menyediakan `MONGO_URL`, kamu bisa isi:
+
+```dotenv
+MONGODB_DSN=${{Mongo.MONGO_URL}}
+```
+
+atau biarkan `MONGO_URL` tersedia sebagai variable service reference. Aplikasi akan membaca `MONGODB_DSN`, lalu fallback ke `MONGO_URL`, lalu `DATABASE_URL`.
+
 Tambahkan juga credential provider sesuai yang dipakai:
 
 ```dotenv

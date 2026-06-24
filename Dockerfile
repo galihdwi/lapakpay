@@ -38,7 +38,7 @@ COPY supervisor.conf /etc/supervisor/conf.d/supervisor.conf
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html/runtime /var/www/html/web/assets
 
-# Expose port 9000
-EXPOSE 9000
+# Railway provides PORT for HTTP; local docker-compose still uses php-fpm on 9000.
+EXPOSE 8080 9000
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisor.conf"]

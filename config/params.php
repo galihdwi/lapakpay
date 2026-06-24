@@ -7,7 +7,7 @@ return [
     'providers' => [
         'vip-reseller' => 'vipReseller',
     ],
-    'paymentGateway' => 'mayar',
+    'paymentGateway' => 'flip',
     'margins' => [
         'global' => ['user' => 2000, 'reseller' => 1000],
     ],

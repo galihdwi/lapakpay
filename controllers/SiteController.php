@@ -137,12 +137,12 @@ class SiteController extends Controller
         $productId = trim((string) $request->post('product_id', ''));
         $target = trim((string) $request->post('target', ''));
         $zone = trim((string) $request->post('zone', ''));
-        $paymentMethod = trim((string) $request->post('payment_method', 'Mayar'));
+        $paymentMethod = trim((string) $request->post('payment_method', 'Flip'));
         $email = trim((string) $request->post('email', ''));
         $mobile = trim((string) $request->post('mobile', ''));
 
         if ($paymentMethod === '') {
-            $paymentMethod = 'Mayar';
+            $paymentMethod = 'Flip';
         }
 
         if ($productId === '' || $target === '' || $email === '' || $mobile === '') {
@@ -189,7 +189,7 @@ class SiteController extends Controller
                 Yii::$app->response->statusCode = 502;
                 return [
                     'status' => 'error',
-                    'message' => $invoice['message'] ?? 'Gagal membuat payment link Mayar.',
+                    'message' => $invoice['message'] ?? 'Gagal membuat payment link Flip.',
                     'invoice_number' => $transaction->invoice_number,
                 ];
             }

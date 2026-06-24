@@ -17,8 +17,8 @@ class ProcessPaymentWebhookJob extends BaseObject implements JobInterface
     public function execute($queue): void
     {
         try {
-            $gatewayName = 'mayar';
-            $gateway = Yii::$app->get('mayarGateway');
+            $gatewayName = $this->gatewayName !== '' ? $this->gatewayName : (string) (Yii::$app->params['paymentGateway'] ?? 'flip');
+            $gateway = Yii::$app->get($this->gatewayComponentId($gatewayName));
             $data = $gateway->handleWebhook($this->payload, $this->headers);
 
             Yii::createObject(TransactionService::class)->processPaidPayment($data, $gatewayName);
@@ -26,5 +26,10 @@ class ProcessPaymentWebhookJob extends BaseObject implements JobInterface
             Yii::error($exception->getMessage(), __METHOD__);
             throw $exception;
         }
+    }
+
+    private function gatewayComponentId(string $gatewayName): string
+    {
+        return preg_replace('/[^a-z0-9]/i', '', $gatewayName) . 'Gateway';
     }
 }

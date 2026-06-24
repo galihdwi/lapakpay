@@ -37,6 +37,13 @@ $config = [
             'apiUrl' => app_env('MAYAR_API_URL', 'https://api.mayar.id/'),
             'apiKey' => app_env('MAYAR_API_KEY'),
         ],
+        'flipGateway' => [
+            'class' => \app\gateways\FlipGateway::class,
+            'apiUrl' => app_env('FLIP_API_URL', 'https://bigflip.id/big_sandbox_api/v2/'),
+            'apiKey' => app_env('FLIP_API_KEY'),
+            'validationToken' => app_env('FLIP_VALIDATION_TOKEN'),
+            'publicBaseUrl' => app_env('APP_BASE_URL'),
+        ],
         'log' => [
             'targets' => [
                 [

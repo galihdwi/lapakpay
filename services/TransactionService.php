@@ -59,8 +59,8 @@ class TransactionService extends Component
 
     public function createPayment(Transaction $transaction, array $customerDetails = []): array
     {
-        $gatewayName = 'mayar';
-        $invoice = Yii::$app->get('mayarGateway')->createInvoice(
+        $gatewayName = $this->defaultGatewayName();
+        $invoice = Yii::$app->get($this->gatewayComponentId($gatewayName))->createInvoice(
             (string) $transaction->invoice_number,
             (float) $transaction->sell_price,
             (string) $transaction->payment_method,
@@ -125,6 +125,16 @@ class TransactionService extends Component
         }
 
         return true;
+    }
+
+    private function defaultGatewayName(): string
+    {
+        return (string) (Yii::$app->params['paymentGateway'] ?? 'flip');
+    }
+
+    private function gatewayComponentId(string $gatewayName): string
+    {
+        return preg_replace('/[^a-z0-9]/i', '', $gatewayName) . 'Gateway';
     }
 
     private function resolveSellPrice(Product $product): float

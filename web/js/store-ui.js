@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
             payload.append('product_id', selectedProduct.dataset.productId || '');
             payload.append('target', targetInput.value.trim());
             payload.append('zone', zoneInput?.value.trim() || '');
-            payload.append('payment_method', 'Mayar');
+            payload.append('payment_method', 'Flip');
             payload.append('email', emailInput.value.trim());
             payload.append('mobile', mobileInput.value.trim());
 
@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
 
-                showCheckoutMessage(message, `Invoice ${data.invoice_number} dibuat. Mengalihkan ke Mayar...`, false);
+                showCheckoutMessage(message, `Invoice ${data.invoice_number} dibuat. Mengalihkan ke Flip...`, false);
                 window.location.href = data.payment_url;
             } catch (error) {
                 showCheckoutMessage(message, 'Gagal menghubungi server. Coba lagi.', true);

@@ -25,6 +25,11 @@ class WebhookController extends Controller
         return $this->enqueuePaymentWebhook('mayar');
     }
 
+    public function actionFlip()
+    {
+        return $this->enqueuePaymentWebhook('flip');
+    }
+
     private function enqueuePaymentWebhook(string $gatewayName): array
     {
         Yii::$app->response->format = Response::FORMAT_JSON;

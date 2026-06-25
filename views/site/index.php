@@ -222,7 +222,6 @@ $flashSales = [
 <nav class="mobile-bottom-nav" aria-label="Mobile navigation">
     <a href="#main">Home</a>
     <a href="#categories">Kategori</a>
-    <a href="#dashboard">Riwayat</a>
-    <a href="#dashboard">Saldo</a>
+    <?= Html::a('Track Order', ['/site/track-order']) ?>
     <a href="#dashboard">Akun</a>
 </nav>

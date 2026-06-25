@@ -18,12 +18,8 @@ $items = [
         'url' => ['/site/index', '#' => 'categories'],
     ],
     [
-        'label' => 'Riwayat',
-        'url' => ['/site/index', '#' => 'dashboard'],
-    ],
-    [
-        'label' => 'Saldo',
-        'url' => ['/site/index', '#' => 'dashboard'],
+        'label' => 'Track Order',
+        'url' => ['/site/track-order'],
     ],
     [
         'label' => 'Admin',

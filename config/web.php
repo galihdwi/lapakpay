@@ -91,6 +91,7 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'track-order' => 'site/track-order',
                 'games/<slug:[\w-]+>' => 'site/products',
             ],
         ],

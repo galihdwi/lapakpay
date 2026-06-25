@@ -771,6 +771,181 @@ a {
     align-self: start;
 }
 
+.track-order-layout {
+    align-items: start;
+    display: grid;
+    gap: 1rem;
+}
+
+.track-main {
+    display: grid;
+    gap: 1rem;
+    min-width: 0;
+}
+
+.track-card {
+    background: linear-gradient(180deg, rgba(30, 41, 59, .88), rgba(17, 28, 51, .88));
+    border: 1px solid var(--lp-border);
+    border-radius: var(--lp-radius-md);
+    box-shadow: 0 12px 32px rgba(2, 6, 23, .22);
+    padding: 1rem;
+}
+
+.track-card-head,
+.track-result-head {
+    align-items: flex-start;
+    display: flex;
+    gap: .85rem;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.track-card-head {
+    justify-content: flex-start;
+}
+
+.track-card h2 {
+    color: var(--lp-text);
+    font-size: 1.1rem;
+    font-weight: 950;
+    line-height: 1.25;
+    margin: 0;
+}
+
+.track-form {
+    display: grid;
+    gap: .65rem;
+}
+
+.track-form .lp-btn,
+.track-form .lp-input {
+    min-width: 0;
+    width: 100%;
+}
+
+.track-empty-state {
+    border-style: dashed;
+}
+
+.track-empty-state strong {
+    color: var(--lp-text);
+    display: block;
+    font-size: 1rem;
+    margin-bottom: .25rem;
+}
+
+.track-eyebrow,
+.track-detail-item span,
+.track-total span {
+    color: var(--lp-muted);
+    display: block;
+    font-size: .78rem;
+    font-weight: 800;
+    margin-bottom: .3rem;
+}
+
+.track-result-head h2 {
+    overflow-wrap: anywhere;
+}
+
+.track-status {
+    border-radius: 999px;
+    flex: 0 0 auto;
+    font-size: .78rem;
+    font-weight: 950;
+    padding: .45rem .7rem;
+    white-space: nowrap;
+}
+
+.track-status-pending {
+    background: rgba(245, 158, 11, .16);
+    border: 1px solid rgba(245, 158, 11, .36);
+    color: #FCD34D;
+}
+
+.track-status-process {
+    background: rgba(59, 130, 246, .16);
+    border: 1px solid rgba(96, 165, 250, .36);
+    color: #93C5FD;
+}
+
+.track-status-success {
+    background: rgba(0, 200, 83, .14);
+    border: 1px solid rgba(0, 200, 83, .36);
+    color: #9BFFBF;
+}
+
+.track-status-danger {
+    background: rgba(239, 68, 68, .16);
+    border: 1px solid rgba(248, 113, 113, .36);
+    color: #FCA5A5;
+}
+
+.track-total {
+    background: rgba(15, 23, 42, .62);
+    border: 1px solid var(--lp-border);
+    border-radius: 16px;
+    margin-bottom: 1rem;
+    padding: 1rem;
+}
+
+.track-total strong {
+    color: var(--lp-text);
+    display: block;
+    font-size: 1.45rem;
+    font-weight: 950;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+
+.track-detail-grid {
+    display: grid;
+    gap: .7rem;
+}
+
+.track-detail-item {
+    background: rgba(15, 23, 42, .46);
+    border: 1px solid var(--lp-border);
+    border-radius: 14px;
+    min-width: 0;
+    padding: .85rem;
+}
+
+.track-detail-item strong {
+    color: var(--lp-text);
+    display: block;
+    font-size: .95rem;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+}
+
+.track-help-card {
+    align-self: start;
+}
+
+.track-help-card h2 {
+    color: var(--lp-text);
+    font-size: 1.05rem;
+    font-weight: 950;
+    margin-bottom: .55rem;
+}
+
+.track-help-list {
+    display: grid;
+    gap: .5rem;
+    margin: 1rem 0;
+}
+
+.track-help-list span {
+    background: rgba(15, 23, 42, .5);
+    border: 1px solid var(--lp-border);
+    border-radius: 12px;
+    color: var(--lp-muted);
+    display: block;
+    font-size: .86rem;
+    padding: .7rem;
+}
+
 .value-grid,
 .dashboard-grid,
 .testimonial-row,
@@ -1334,12 +1509,29 @@ a {
         grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
+    .track-form {
+        grid-template-columns: minmax(0, 1fr) 180px;
+    }
+
+    .track-detail-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
     .admin-menu-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
 
 @media (min-width: 992px) {
+    .track-order-layout {
+        grid-template-columns: minmax(0, 1fr) 320px;
+    }
+
+    .track-help-card {
+        position: sticky;
+        top: 110px;
+    }
+
     .game-detail-layout {
         grid-template-columns: .72fr 1.35fr .8fr;
     }
@@ -1418,5 +1610,17 @@ a {
         background:
             linear-gradient(180deg, rgba(15, 23, 42, .96) 0%, rgba(15, 23, 42, .78) 100%),
             var(--hero-image) center / cover;
+    }
+
+    .track-card {
+        padding: .9rem;
+    }
+
+    .track-result-head {
+        display: grid;
+    }
+
+    .track-status {
+        justify-self: start;
     }
 }

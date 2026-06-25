@@ -6,6 +6,8 @@ namespace app\controllers;
 
 use Yii;
 use app\models\ContactForm;
+use app\repositories\ProductRepository;
+use app\repositories\TransactionRepository;
 use app\services\ProductService;
 use app\services\TransactionService;
 use app\models\LoginForm;
@@ -28,6 +30,8 @@ class SiteController extends Controller
         private readonly Security $security,
         private readonly ProductService $productService,
         private readonly TransactionService $transactionService,
+        private readonly TransactionRepository $transactionRepository,
+        private readonly ProductRepository $productRepository,
         $config = [],
     ) {
         parent::__construct($id, $module, $config);
@@ -86,6 +90,26 @@ class SiteController extends Controller
     {
         return $this->render('index', [
             'favoriteCategories' => $this->productService->getFavoriteCategories(),
+        ]);
+    }
+
+    public function actionTrackOrder(?string $invoice = null): string
+    {
+        $invoice = strtoupper(trim((string) ($invoice ?: Yii::$app->request->get('invoice', ''))));
+        $transaction = null;
+        $product = null;
+
+        if ($invoice !== '') {
+            $transaction = $this->transactionRepository->findByInvoiceNumber($invoice);
+            if ($transaction !== null && $transaction->product_id !== null && $transaction->product_id !== '') {
+                $product = $this->productRepository->findById($transaction->product_id);
+            }
+        }
+
+        return $this->render('track-order', [
+            'invoice' => $invoice,
+            'transaction' => $transaction,
+            'product' => $product,
         ]);
     }
 

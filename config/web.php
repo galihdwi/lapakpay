@@ -31,6 +31,15 @@ $config = [
         'cache' => [
             'class' => \yii\caching\FileCache::class,
         ],
+        'i18n' => [
+            'translations' => [
+                'yii/bootstrap5' => [
+                    'class' => \yii\i18n\GettextMessageSource::class,
+                    'sourceLanguage' => 'en-US',
+                    'basePath' => '@yii/bootstrap5/messages',
+                ],
+            ],
+        ],
         'queue' => [
             'class' => \yii\queue\file\Queue::class,
             'path' => '@runtime/queue',

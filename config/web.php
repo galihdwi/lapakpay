@@ -88,7 +88,7 @@ $config = [
     'params' => $params,
 ];
 
-if (YII_ENV_DEV) {
+if (YII_ENV_DEV && class_exists(\yii\debug\Module::class)) {
     // configuration adjustments for 'dev' environment
     $config['bootstrap'][] = 'debug';
     $config['modules']['debug'] = [
@@ -96,7 +96,9 @@ if (YII_ENV_DEV) {
         // uncomment the following to add your IP if you are not connecting from localhost.
         //'allowedIPs' => ['127.0.0.1', '::1'],
     ];
+}
 
+if (YII_ENV_DEV && class_exists(\yii\gii\Module::class)) {
     $config['bootstrap'][] = 'gii';
     $config['modules']['gii'] = [
         'class' => \yii\gii\Module::class,

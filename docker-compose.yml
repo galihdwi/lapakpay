@@ -5,6 +5,7 @@ services:
       dockerfile: Dockerfile
     volumes:
       - .:/var/www/html
+      - vendor_data:/var/www/html/vendor
     environment:
       - PHP_IDE_CONFIG="serverName=lapakpay"
       - YII_ENV=dev
@@ -33,3 +34,4 @@ services:
 
 volumes:
   mongodb_data:
+  vendor_data:

@@ -21,7 +21,9 @@ RUN apt-get update && apt-get install -y \
 # Install PHP extensions
 RUN docker-php-ext-install gd pdo pdo_mysql bcmath
 
-# Install MongoDB extension
+# Install MongoDB PHP driver for external MongoDB connections.
+# This image does not run a MongoDB server internally; configure MONGODB_DSN,
+# MONGO_URL, or DATABASE_URL at runtime.
 RUN pecl install mongodb && docker-php-ext-enable mongodb
 
 # MongoDB Atlas requires TLS certificate validation.
@@ -40,7 +42,7 @@ WORKDIR /var/www/html
 COPY . .
 
 # Install dependencies
-RUN composer install --no-dev --optimize-autoloader --ignore-platform-reqs
+RUN composer install --no-dev --optimize-autoloader
 
 # Copy supervisor config
 COPY supervisor.conf /etc/supervisor/conf.d/supervisor.conf

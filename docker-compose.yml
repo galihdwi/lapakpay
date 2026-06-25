@@ -8,6 +8,7 @@ services:
       - vendor_data:/var/www/html/vendor
     environment:
       - PHP_IDE_CONFIG="serverName=lapakpay"
+      - RUN_PHP_FPM=true
       - YII_ENV=dev
       - YII_DEBUG=true
       - MONGODB_DSN=mongodb://mongodb:27017/lapakpay

@@ -139,17 +139,16 @@ class SiteController extends Controller
         $zone = trim((string) $request->post('zone', ''));
         $paymentMethod = trim((string) $request->post('payment_method', 'Flip'));
         $email = trim((string) $request->post('email', ''));
-        $mobile = trim((string) $request->post('mobile', ''));
 
         if ($paymentMethod === '') {
             $paymentMethod = 'Flip';
         }
 
-        if ($productId === '' || $target === '' || $email === '' || $mobile === '') {
+        if ($productId === '' || $target === '' || $email === '') {
             Yii::$app->response->statusCode = 422;
             return [
                 'status' => 'error',
-                'message' => 'Produk, User ID, email, dan nomor HP wajib diisi.',
+                'message' => 'Produk, User ID, dan email wajib diisi.',
             ];
         }
 
@@ -182,7 +181,6 @@ class SiteController extends Controller
             $invoice = $this->transactionService->createPayment($transaction, [
                 'name' => Yii::$app->user->isGuest ? 'Customer' : (string) Yii::$app->user->identity->username,
                 'email' => $email,
-                'mobile' => $mobile,
             ]);
 
             if (($invoice['status'] ?? null) !== 'success' || empty($invoice['payment_url'])) {

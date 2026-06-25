@@ -31,11 +31,6 @@ $items = [
         'visible' => !Yii::$app->user->isGuest && Yii::$app->user->identity?->role === 'admin',
     ],
     [
-        'label' => 'Login',
-        'url' => ['/site/login'],
-        'visible' => Yii::$app->user->isGuest,
-    ],
-    [
         'label' => 'Logout (' . Html::encode(Yii::$app->user->identity?->username ?? '') . ')',
         'url' => ['/site/logout'],
         'linkOptions' => [
@@ -66,7 +61,6 @@ $items = [
             'items' => $items,
         ],
     ) ?>
-    <?= Html::a('Daftar', ['/site/login'], ['class' => 'btn btn-sm lp-btn lp-btn-primary ms-lg-2 d-none d-lg-inline-flex']) ?>
     <?= Html::button(
         '◐',
         [

@@ -54,7 +54,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const targetInput = checkout.querySelector('[data-order-target]');
             const zoneInput = checkout.querySelector('[data-order-zone]');
             const emailInput = checkout.querySelector('[data-order-email]');
-            const mobileInput = checkout.querySelector('[data-order-mobile]');
             const message = checkout.querySelector('[data-order-message]');
 
             hideCheckoutMessage(message);
@@ -76,19 +75,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            if (!mobileInput?.value.trim()) {
-                showCheckoutMessage(message, 'Nomor HP wajib diisi.', true);
-                mobileInput?.focus();
-                return;
-            }
-
             const payload = new FormData();
             payload.append('product_id', selectedProduct.dataset.productId || '');
             payload.append('target', targetInput.value.trim());
             payload.append('zone', zoneInput?.value.trim() || '');
             payload.append('payment_method', 'Flip');
             payload.append('email', emailInput.value.trim());
-            payload.append('mobile', mobileInput.value.trim());
 
             if (window.yii?.getCsrfParam && window.yii?.getCsrfToken) {
                 payload.append(window.yii.getCsrfParam(), window.yii.getCsrfToken());

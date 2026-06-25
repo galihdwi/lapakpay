@@ -32,7 +32,7 @@ use yii\helpers\Html;
             </div>
             <div class="col-6 col-lg-2">
                 <h3 class="lp-footer-title">Bantuan</h3>
-                <a href="#topup-detail">Cara Topup</a>
+                <a href="#popular">Cara Topup</a>
                 <a href="#dashboard">Riwayat</a>
                 <a href="#dashboard">Deposit</a>
                 <a href="#contact">Kontak</a>

@@ -145,7 +145,6 @@ foreach ($products as $product) {
                     <div class="step-label">3</div>
                     <h2>Data Pembeli</h2>
                     <input class="form-control lp-input" placeholder="Email untuk invoice dan bukti pembayaran" data-order-email>
-                    <input class="form-control lp-input mt-3" placeholder="Nomor HP / WhatsApp" data-order-mobile>
                     <div class="nickname-result d-none mt-3" data-order-message></div>
                 </div>
             </div>

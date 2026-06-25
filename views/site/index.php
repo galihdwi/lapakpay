@@ -57,8 +57,6 @@ $flashSales = [
     ['Spotify 1 Bulan', 'Rp16.000', 'Rp20.000', 74],
 ];
 
-$nominals = ['86 Diamonds', '172 Diamonds', '257 Diamonds', '344 Diamonds', '878 Diamonds', 'Twilight Pass', 'Weekly Pass'];
-$payments = ['QRIS', 'DANA', 'OVO', 'BCA VA', 'Mandiri VA', 'Alfamart', 'Saldo Akun'];
 ?>
 <div class="store-page">
 
@@ -74,7 +72,7 @@ $payments = ['QRIS', 'DANA', 'OVO', 'BCA VA', 'Mandiri VA', 'Alfamart', 'Saldo A
                                     <h2><?= Html::encode($slide['title']) ?></h2>
                                     <p><?= Html::encode($slide['copy']) ?></p>
                                     <div class="d-flex flex-wrap gap-2">
-                                        <a href="#topup-detail" class="lp-btn lp-btn-primary">Topup Sekarang</a>
+                                        <a href="#popular" class="lp-btn lp-btn-primary">Topup Sekarang</a>
                                         <a href="#popular" class="lp-btn lp-btn-ghost">Mulai dari Rp1.000</a>
                                     </div>
                                 </div>
@@ -140,7 +138,7 @@ $payments = ['QRIS', 'DANA', 'OVO', 'BCA VA', 'Mandiri VA', 'Alfamart', 'Saldo A
                             </div>
                             <h3><?= Html::encode($product[0]) ?></h3>
                             <p><?= Html::encode($product[1]) ?></p>
-                            <a href="#topup-detail" class="lp-btn lp-btn-small">Topup</a>
+                            <a href="#popular" class="lp-btn lp-btn-small">Topup</a>
                         </div>
                     </article>
                 <?php endforeach ?>
@@ -169,82 +167,6 @@ $payments = ['QRIS', 'DANA', 'OVO', 'BCA VA', 'Mandiri VA', 'Alfamart', 'Saldo A
                             </div>
                         </article>
                     <?php endforeach ?>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="topup-detail" class="content-section">
-        <div class="container-xl">
-            <div class="section-head">
-                <div>
-                    <div class="section-kicker">High Fidelity UI</div>
-                    <h2 class="section-title">Detail Topup Mobile Legends</h2>
-                </div>
-            </div>
-            <div class="topup-layout">
-                <aside class="game-info-panel">
-                    <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=900&q=80" alt="Mobile Legends topup preview" loading="lazy">
-                    <div class="game-info-body">
-                        <span class="hero-pill">Instant Delivery</span>
-                        <h3>Mobile Legends</h3>
-                        <p>Masukkan User ID dan Zone ID, pilih nominal, lalu bayar. Pesanan diproses otomatis oleh supplier aktif.</p>
-                        <ul>
-                            <li>Estimasi proses 10-60 detik</li>
-                            <li>Nickname checker real-time</li>
-                            <li>Harga user dan reseller terpisah</li>
-                        </ul>
-                    </div>
-                </aside>
-                <div class="checkout-panel">
-                    <div class="checkout-step">
-                        <div class="step-label">1</div>
-                        <h3>Masukkan ID Game</h3>
-                        <div class="row g-2">
-                            <div class="col-7"><input class="form-control lp-input" placeholder="User ID"></div>
-                            <div class="col-5"><input class="form-control lp-input" placeholder="Zone ID"></div>
-                        </div>
-                        <button type="button" class="lp-btn lp-btn-ghost mt-3" data-check-nickname>Cek Nickname</button>
-                        <div class="nickname-result" data-nickname-result>Nickname dan region tampil di sini.</div>
-                    </div>
-                    <div class="checkout-step">
-                        <div class="step-label">2</div>
-                        <h3>Pilih Nominal</h3>
-                        <div class="nominal-grid">
-                            <?php foreach ($nominals as $index => $nominal): ?>
-                                <button type="button" class="select-card <?= $index === 1 ? 'is-active' : '' ?>" data-select-card="nominal">
-                                    <?= Html::encode($nominal) ?>
-                                    <small>Mulai Rp<?= number_format(19000 + ($index * 8500), 0, ',', '.') ?></small>
-                                </button>
-                            <?php endforeach ?>
-                        </div>
-                    </div>
-                    <div class="checkout-step">
-                        <div class="step-label">3</div>
-                        <h3>Metode Pembayaran</h3>
-                        <div class="payment-select-grid">
-                            <?php foreach ($payments as $index => $payment): ?>
-                                <button type="button" class="select-card <?= $index === 0 ? 'is-active' : '' ?>" data-select-card="payment">
-                                    <?= Html::encode($payment) ?>
-                                </button>
-                            <?php endforeach ?>
-                        </div>
-                    </div>
-                    <div class="checkout-step">
-                        <div class="step-label">4</div>
-                        <h3>Data Pembeli</h3>
-                        <div class="row g-2">
-                            <div class="col-md-6"><input class="form-control lp-input" placeholder="Email"></div>
-                            <div class="col-md-6"><input class="form-control lp-input" placeholder="Nomor WhatsApp"></div>
-                        </div>
-                    </div>
-                    <div class="order-summary">
-                        <div><span>Produk</span><strong>172 Diamonds</strong></div>
-                        <div><span>Harga</span><strong>Rp39.500</strong></div>
-                        <div><span>Biaya Admin</span><strong>Rp1.000</strong></div>
-                        <div class="total"><span>Total Bayar</span><strong>Rp40.500</strong></div>
-                        <button class="lp-btn lp-btn-primary w-100">Bayar Sekarang</button>
-                    </div>
                 </div>
             </div>
         </div>

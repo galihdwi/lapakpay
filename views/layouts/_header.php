@@ -50,7 +50,7 @@ $items = [
 <header id="header" class="lp-header">
     <?php NavBar::begin(
         [
-            'brandLabel' => 'LapakPay',
+            'brandLabel' => 'AksesPay',
             'brandUrl' => Yii::$app->homeUrl,
             'options' => ['class' => 'navbar-expand-lg navbar-dark fixed-top lp-navbar']
         ],

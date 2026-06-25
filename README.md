@@ -143,6 +143,15 @@ MONGODB_DSN=mongodb://...
 MONGODB_DATABASE=lapakpay
 ```
 
+Jika memakai MongoDB Atlas dari `account.mongodb.com`, gunakan connection string `mongodb+srv` dari Atlas:
+
+```dotenv
+MONGODB_DSN=mongodb+srv://username:password@cluster0.xxxxx.mongodb.net/lapakpay?retryWrites=true&w=majority&appName=lapakpay
+MONGODB_DATABASE=lapakpay
+```
+
+Pastikan password di connection string sudah URL-encoded jika mengandung karakter khusus seperti `@`, `#`, `%`, `/`, atau `:`. Di Atlas Network Access, izinkan koneksi dari Railway, misalnya sementara `0.0.0.0/0`.
+
 Jika service MongoDB Railway menyediakan `MONGO_URL`, kamu bisa isi:
 
 ```dotenv
@@ -165,6 +174,7 @@ Catatan:
 - Jangan upload `.env` ke Railway atau commit ke git. File `.env` hanya untuk lokal.
 - Railway akan mengisi `PORT` otomatis; container sudah menjalankan PHP built-in server pada port tersebut.
 - Jika memakai MongoDB Railway, gunakan connection string dari service MongoDB sebagai `MONGODB_DSN`.
+- Jika memakai MongoDB Atlas, gunakan connection string Atlas sebagai `MONGODB_DSN`.
 - Buka `/healthz` untuk memastikan container HTTP sudah hidup tanpa menyentuh Yii atau MongoDB.
 
 

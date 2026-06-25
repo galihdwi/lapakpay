@@ -2,6 +2,8 @@ FROM php:8.3-fpm
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
+    ca-certificates \
+    openssl \
     libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \
@@ -12,13 +14,21 @@ RUN apt-get update && apt-get install -y \
     libssl-dev \
     pkg-config \
     supervisor \
-    cron
+    cron \
+    && update-ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
 RUN docker-php-ext-install gd pdo pdo_mysql bcmath
 
 # Install MongoDB extension
 RUN pecl install mongodb && docker-php-ext-enable mongodb
+
+# MongoDB Atlas requires TLS certificate validation.
+RUN { \
+        echo 'openssl.cafile=/etc/ssl/certs/ca-certificates.crt'; \
+        echo 'curl.cainfo=/etc/ssl/certs/ca-certificates.crt'; \
+    } > /usr/local/etc/php/conf.d/ca-certificates.ini
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer

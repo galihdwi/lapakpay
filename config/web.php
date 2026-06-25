@@ -7,6 +7,7 @@ $db = require __DIR__ . '/db.php';
 
 $config = [
     'id' => 'basic',
+    'name' => app_env('APP_NAME', 'AksesPay'),
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'container' => [

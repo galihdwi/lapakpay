@@ -9,7 +9,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 
-$this->title = 'Topup ' . $selectedBrand . ' - LapakPay';
+$this->title = 'Topup ' . $selectedBrand . ' - AksesPay';
 $this->params['breadcrumbs'][] = ['label' => 'Home', 'url' => ['/site/index']];
 $this->params['breadcrumbs'][] = $selectedBrand;
 
@@ -53,7 +53,7 @@ foreach ($products as $product) {
             <div class="game-hero-copy">
                 <div class="section-kicker">Produk Digital</div>
                 <h1><?= Html::encode($selectedBrand) ?></h1>
-                <p>Topup cepat, pembayaran aman, dan produk diproses otomatis dari supplier aktif LapakPay.</p>
+                <p>Topup cepat, pembayaran aman, dan produk diproses otomatis dari supplier aktif AksesPay.</p>
                 <div class="game-trust-row">
                     <span>Proses cepat</span>
                     <span>Layanan 24/7</span>

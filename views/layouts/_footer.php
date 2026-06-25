@@ -12,8 +12,8 @@ use yii\helpers\Html;
         <div class="row g-4">
             <div class="col-lg-4">
                 <div class="d-flex align-items-center gap-2 mb-3">
-                    <span class="brand-mark">LP</span>
-                    <strong class="text-white">LapakPay</strong>
+                    <span class="brand-mark">AP</span>
+                    <strong class="text-white">AksesPay</strong>
                 </div>
                 <p class="lp-muted mb-3">Topup game, PPOB, dan streaming premium dengan proses otomatis, pembayaran aman, dan dukungan reseller.</p>
                 <div class="d-flex flex-wrap gap-2">

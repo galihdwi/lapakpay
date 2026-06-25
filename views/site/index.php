@@ -6,9 +6,9 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 
-$this->title = 'LapakPay - Topup Game, PPOB, Streaming Premium';
+$this->title = 'AksesPay - Topup Game, PPOB, Streaming Premium';
 $this->params['meta_description'] = 'Topup game, PPOB, dan streaming premium cepat dengan harga kompetitif dan pembayaran lengkap.';
-$this->params['meta_keywords'] = 'topup game, mobile legends, free fire, ppob, netflix, spotify, lapakpay';
+$this->params['meta_keywords'] = 'topup game, mobile legends, free fire, ppob, netflix, spotify, aksespay';
 
 $heroSlides = [
     ['title' => 'Promo Diamond ML', 'copy' => 'Diskon sampai 35% untuk weekly pass dan diamond populer.', 'tag' => 'Mulai Rp1.000', 'image' => 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1400&q=80'],

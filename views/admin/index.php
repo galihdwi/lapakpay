@@ -25,7 +25,7 @@ $cards = [
     <div class="admin-page-head">
         <div>
             <div class="section-kicker">Admin Panel</div>
-            <h1 class="section-title">Admin LapakPay</h1>
+            <h1 class="section-title">Admin AksesPay</h1>
             <p class="lp-muted mb-0">Kelola operasional topup, PPOB, reseller, supplier, dan payment gateway.</p>
         </div>
         <?= Html::a('Laporan', ['reports'], ['class' => 'lp-btn lp-btn-primary']) ?>

@@ -393,7 +393,7 @@ class AdminController extends Controller
                 'columns' => ['name', 'code', 'priority', 'fee_flat', 'fee_percent', 'status', 'updated_at'],
                 'fields' => [
                     ['name', 'text'],
-                    ['code', 'dropDownList', 'items' => ['flip' => 'Flip', 'mayar' => 'Mayar']],
+                    ['code', 'dropDownList', 'items' => ['flip' => 'Flip', 'ipaymu' => 'iPaymu']],
                     ['api_url', 'text'],
                     ['api_key', 'text'],
                     ['private_key', 'text'],

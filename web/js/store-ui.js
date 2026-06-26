@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
             payload.append('product_id', selectedProduct.dataset.productId || '');
             payload.append('target', targetInput.value.trim());
             payload.append('zone', zoneInput?.value.trim() || '');
-            payload.append('payment_method', 'Flip');
+            payload.append('payment_method', 'iPaymu');
             payload.append('email', emailInput.value.trim());
 
             if (window.yii?.getCsrfParam && window.yii?.getCsrfToken) {
@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
 
-                showCheckoutMessage(message, `Invoice ${data.invoice_number} dibuat. Mengalihkan ke Flip...`, false);
+                showCheckoutMessage(message, `Invoice ${data.invoice_number} dibuat. Mengalihkan ke pembayaran...`, false);
                 window.location.href = data.payment_url;
             } catch (error) {
                 showCheckoutMessage(message, 'Gagal menghubungi server. Coba lagi.', true);

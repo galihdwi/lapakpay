@@ -7,7 +7,7 @@ return [
     'providers' => [
         'vip-reseller' => 'vipReseller',
     ],
-    'paymentGateway' => 'flip',
+    'paymentGateway' => 'ipaymu',
     'margins' => [
         'global' => ['user' => 2000, 'reseller' => 1000],
     ],

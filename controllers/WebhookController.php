@@ -20,9 +20,9 @@ class WebhookController extends Controller
         parent::__construct($id, $module, $config);
     }
 
-    public function actionMayar()
+    public function actionIpaymu()
     {
-        return $this->enqueuePaymentWebhook('mayar');
+        return $this->enqueuePaymentWebhook('ipaymu');
     }
 
     public function actionFlip()

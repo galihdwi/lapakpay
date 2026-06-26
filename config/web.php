@@ -54,10 +54,12 @@ $config = [
             'apiId' => app_env('VIP_RESELLER_API_ID'),
             'apiKey' => app_env('VIP_RESELLER_API_KEY'),
         ],
-        'mayarGateway' => [
-            'class' => \app\gateways\MayarGateway::class,
-            'apiUrl' => app_env('MAYAR_API_URL', 'https://api.mayar.id/'),
-            'apiKey' => app_env('MAYAR_API_KEY'),
+        'ipaymuGateway' => [
+            'class' => \app\gateways\IpaymuGateway::class,
+            'apiUrl' => app_env('IPAYMU_API_URL', 'https://my.ipaymu.com/api/v2/'),
+            'va' => app_env('IPAYMU_VA'),
+            'apiKey' => app_env('IPAYMU_API_KEY'),
+            'publicBaseUrl' => app_env('APP_BASE_URL'),
         ],
         'flipGateway' => [
             'class' => \app\gateways\FlipGateway::class,

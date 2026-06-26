@@ -165,7 +165,9 @@ Tambahkan juga credential provider sesuai yang dipakai:
 ```dotenv
 VIP_RESELLER_API_ID=
 VIP_RESELLER_API_KEY=
-MAYAR_API_KEY=
+IPAYMU_API_URL=https://my.ipaymu.com/api/v2/
+IPAYMU_VA=
+IPAYMU_API_KEY=
 FLIP_API_KEY=
 FLIP_VALIDATION_TOKEN=
 ```

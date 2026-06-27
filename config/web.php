@@ -96,6 +96,8 @@ $config = [
                 'contact' => 'site/contact',
                 'categories' => 'site/categories',
                 'cara-topup' => 'site/cara-topup',
+                'syarat-ketentuan' => 'site/syarat-ketentuan',
+                'kebijakan-privasi' => 'site/kebijakan-privasi',
                 'track-order' => 'site/track-order',
                 'games/<slug:[\w-]+>' => 'site/products',
             ],

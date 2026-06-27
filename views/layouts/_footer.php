@@ -43,11 +43,15 @@ use yii\helpers\Html;
                         <span><?= Html::encode($method) ?></span>
                     <?php endforeach ?>
                 </div>
+                <div class="lp-legal-links">
+                    <?= Html::a('Syarat & Ketentuan', ['/site/syarat-ketentuan']) ?>
+                    <?= Html::a('Kebijakan Privasi', ['/site/kebijakan-privasi']) ?>
+                </div>
             </div>
         </div>
         <div class="lp-footer-bottom">
             <span>&copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?></span>
-            <span>Secure checkout • Instant delivery • Reseller ready</span>
+            <span>Murah • Aman • Cepat</span>
         </div>
     </div>
 </footer>

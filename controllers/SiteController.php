@@ -196,6 +196,16 @@ class SiteController extends Controller
         return $this->render('cara-topup');
     }
 
+    public function actionSyaratKetentuan(): string
+    {
+        return $this->render('syarat-ketentuan');
+    }
+
+    public function actionKebijakanPrivasi(): string
+    {
+        return $this->render('kebijakan-privasi');
+    }
+
     /**
      * Displays products list with categories (brands) and grouped products
      *

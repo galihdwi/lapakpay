@@ -179,6 +179,14 @@ Catatan:
 - Jika memakai MongoDB Atlas, gunakan connection string Atlas sebagai `MONGODB_DSN`.
 - Buka `/healthz` untuk memastikan container HTTP sudah hidup tanpa menyentuh Yii atau MongoDB.
 
+Reset database MongoDB lokal/deploy:
+
+```bash
+php yii db/fresh --force
+php yii db/fresh --force --sync-products=1 --provider=vip-payment
+php yii db/fresh --force --admin-username=admin --admin-email=admin@example.com --admin-password=secret
+```
+
 
 CONFIGURATION
 -------------

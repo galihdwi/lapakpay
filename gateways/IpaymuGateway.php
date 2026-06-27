@@ -75,7 +75,7 @@ class IpaymuGateway extends Component implements PaymentGatewayInterface
             'cancelUrl' => $cancelUrl,
             'notifyUrl' => $notifyUrl,
             'referenceId' => $invoiceNumber,
-            'buyerName' => $customerDetails['name'] ?? 'Customer',
+            'buyerName' => $customerDetails['name'] ?? '',
             'buyerEmail' => $customerDetails['email'] ?? '',
         ];
 

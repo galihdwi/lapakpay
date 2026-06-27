@@ -23,7 +23,7 @@ class TransactionService extends Component
 
     public function createInvoiceNumber(): string
     {
-        return 'INV-' . date('YmdHis') . '-' . strtoupper(Yii::$app->security->generateRandomString(6));
+        return 'INV' . date('ymdHis') . random_int(100, 999);
     }
 
     public function createTopupTransaction(

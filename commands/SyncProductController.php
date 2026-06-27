@@ -4,7 +4,6 @@ namespace app\commands;
 
 use yii\console\Controller;
 use app\services\ProductService;
-use Yii;
 
 /**
  * SyncProductController handles product synchronization from suppliers.
@@ -24,23 +23,18 @@ class SyncProductController extends Controller
         echo "Starting sync from {$providerName}...\n";
         
         try {
-            $provider = Yii::$app->get('providerRegistry')->get($providerName);
-            $services = $provider->getServices();
+            $result = $this->productService->syncProvider($providerName);
 
-            if (($services['result'] ?? true) === false) {
-                echo "Provider rejected request: " . ($services['message'] ?? 'Unknown error') . "\n";
-                return 1;
-            }
-
-            $items = $services['data'] ?? $services['services'] ?? [];
-
-            if (!is_array($items) || $items === []) {
+            if ($result['received'] === 0) {
                 echo "No product data received from provider.\n";
                 return 1;
             }
 
-            $synced = $this->productService->syncFromProvider($items, $providerName);
-            echo "Successfully synced {$synced} products.\n";
+            echo "Received {$result['received']} products, {$result['active']} active.\n";
+            echo "Successfully synced {$result['synced']} active products.\n";
+            if (($result['zeroPrice'] ?? 0) > 0) {
+                echo "Warning: {$result['zeroPrice']} active products have zero price from provider mapping.\n";
+            }
 
             return 0;
         } catch (\Exception $e) {
@@ -56,5 +50,10 @@ class SyncProductController extends Controller
     public function actionVip()
     {
         return $this->actionProvider('vip-reseller');
+    }
+
+    public function actionVipPayment()
+    {
+        return $this->actionProvider('vip-payment');
     }
 }

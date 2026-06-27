@@ -16,6 +16,8 @@ use app\models\Commission;
 use app\models\Promo;
 use app\repositories\AdminRepository;
 use app\models\Provider;
+use app\services\ProductService;
+use MongoDB\BSON\Regex;
 use Yii;
 use yii\helpers\FileHelper;
 use yii\filters\AccessControl;
@@ -34,6 +36,7 @@ class AdminController extends Controller
         $module,
         private readonly AdminRepository $adminRepository,
         private readonly ProductRepository $productRepository,
+        private readonly ProductService $productService,
         $config = [],
     ) {
         parent::__construct($id, $module, $config);
@@ -56,6 +59,8 @@ class AdminController extends Controller
                 'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['post'],
+                    'bulk-delete' => ['post'],
+                    'sync-products' => ['post'],
                 ],
             ],
         ];
@@ -81,7 +86,11 @@ class AdminController extends Controller
         foreach (($config['searchAttributes'] ?? []) as $attribute) {
             $value = trim((string) Yii::$app->request->get($attribute, ''));
             if ($value !== '') {
-                $query->andWhere([$attribute => $value]);
+                if (($config['searchMode'] ?? 'exact') === 'like') {
+                    $query->andWhere([$attribute => new Regex(preg_quote($value, '/'), 'i')]);
+                } else {
+                    $query->andWhere([$attribute => $value]);
+                }
             }
         }
 
@@ -143,6 +152,26 @@ class AdminController extends Controller
         return $this->redirect(['manage', 'section' => $section]);
     }
 
+    public function actionBulkDelete(string $section): Response
+    {
+        $config = $this->sectionConfig($section);
+        if (empty($config['bulkDelete'])) {
+            throw new NotFoundHttpException('Bulk delete tidak tersedia untuk section ini.');
+        }
+
+        $ids = Yii::$app->request->post('selection', []);
+
+        if (!is_array($ids) || $ids === []) {
+            Yii::$app->session->setFlash('error', 'Pilih data yang ingin dihapus.');
+            return $this->redirect(['manage', 'section' => $section]);
+        }
+
+        $deleted = $this->adminRepository->deleteMany($config['class'], $ids);
+        Yii::$app->session->setFlash('success', "{$deleted} data {$config['title']} berhasil dihapus.");
+
+        return $this->redirect(['manage', 'section' => $section]);
+    }
+
     public function actionReports(): string
     {
         return $this->render('reports', [
@@ -152,6 +181,23 @@ class AdminController extends Controller
                 ->limit(10)
                 ->all(),
         ]);
+    }
+
+    public function actionSyncProducts(string $provider = 'vip-payment'): Response
+    {
+        try {
+            $result = $this->productService->syncProvider($provider);
+            $zeroPriceMessage = ($result['zeroPrice'] ?? 0) > 0 ? " {$result['zeroPrice']} produk aktif punya harga 0." : '';
+            Yii::$app->session->setFlash(
+                'success',
+                "Sync produk selesai. Diterima {$result['received']}, aktif {$result['active']}, tersimpan {$result['synced']}.{$zeroPriceMessage}",
+            );
+        } catch (\Throwable $exception) {
+            Yii::error($exception->getMessage(), __METHOD__);
+            Yii::$app->session->setFlash('error', 'Sync produk gagal: ' . $exception->getMessage());
+        }
+
+        return $this->redirect(['index']);
     }
 
     private function loadAndSave($model, array $config): bool
@@ -353,7 +399,9 @@ class AdminController extends Controller
                 'title' => 'Produk',
                 'icon' => 'box',
                 'class' => Product::class,
-                'searchAttributes' => ['provider', 'provider_code', 'category', 'brand', 'status'],
+                'bulkDelete' => true,
+                'searchMode' => 'like',
+                'searchAttributes' => ['provider', 'provider_code', 'product_name', 'category', 'brand', 'status'],
                 'columns' => ['provider_code', 'product_name', 'category', 'brand', 'base_price', 'user_price', 'reseller_price', 'stock', 'status'],
                 'jsonAttributes' => ['config'],
                 'fields' => [

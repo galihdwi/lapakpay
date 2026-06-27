@@ -56,7 +56,7 @@ $config = [
         ],
         'ipaymuGateway' => [
             'class' => \app\gateways\IpaymuGateway::class,
-            'apiUrl' => app_env('IPAYMU_API_URL', 'https://my.ipaymu.com/api/v2/'),
+            'apiUrl' => app_env('IPAYMU_API_URL', 'https://sandbox.ipaymu.com/api/v2/'),
             'va' => app_env('IPAYMU_VA'),
             'apiKey' => app_env('IPAYMU_API_KEY'),
             'publicBaseUrl' => app_env('APP_BASE_URL'),

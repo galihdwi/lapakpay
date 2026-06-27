@@ -6,6 +6,7 @@ return [
     'senderName' => 'Example.com mailer',
     'providers' => [
         'vip-reseller' => 'vipReseller',
+        'vip-payment' => 'vipReseller',
     ],
     'paymentGateway' => 'ipaymu',
     'margins' => [

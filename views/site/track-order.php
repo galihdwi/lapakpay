@@ -57,7 +57,7 @@ $target = trim((string) ($transaction?->target ?? '') . (($transaction?->zone ??
                     <?= Html::beginForm(['/site/track-order'], 'get', ['class' => 'track-form']) ?>
                         <?= Html::textInput('invoice', $invoice, [
                             'class' => 'form-control lp-input',
-                            'placeholder' => 'Contoh: INV-20260626010101-ABC123',
+                            'placeholder' => 'Contoh: INV260626143012123',
                             'autocomplete' => 'off',
                             'inputmode' => 'text',
                         ]) ?>

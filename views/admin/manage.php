@@ -8,12 +8,14 @@
 use app\controllers\AdminController;
 use yii\bootstrap5\LinkPager;
 use yii\grid\ActionColumn;
+use yii\grid\CheckboxColumn;
 use yii\grid\GridView;
 use yii\helpers\Html;
 
 $this->title = 'Kelola ' . $config['title'];
 $this->params['breadcrumbs'][] = ['label' => 'Admin', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+$bulkDeleteEnabled = !empty($config['bulkDelete']);
 ?>
 
 <section class="admin-section">
@@ -48,6 +50,15 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php endif; ?>
 
         <div class="admin-panel admin-table-panel">
+            <?php if ($bulkDeleteEnabled): ?>
+                <?= Html::beginForm(['bulk-delete', 'section' => $section], 'post', ['class' => 'admin-bulk-form']) ?>
+                <div class="admin-bulk-toolbar">
+                    <?= Html::submitButton('Hapus Terpilih', [
+                        'class' => 'lp-btn lp-btn-ghost admin-bulk-delete',
+                        'data-confirm' => 'Hapus semua produk yang dipilih?',
+                    ]) ?>
+                </div>
+            <?php endif; ?>
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,
                 'tableOptions' => ['class' => 'table table-hover align-middle admin-table'],
@@ -65,6 +76,17 @@ $this->params['breadcrumbs'][] = $this->title;
                     'nextPageLabel' => '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>',
                 ],
                 'columns' => array_merge(
+                    $bulkDeleteEnabled ? [
+                        [
+                            'class' => CheckboxColumn::class,
+                            'checkboxOptions' => static fn ($model): array => [
+                                'value' => (string) $model->_id,
+                                'class' => 'admin-row-checkbox',
+                            ],
+                            'contentOptions' => ['class' => 'admin-checkbox-cell'],
+                            'headerOptions' => ['class' => 'admin-checkbox-cell'],
+                        ],
+                    ] : [],
                     array_map(static function (string|array $attribute): array {
                         if (is_array($attribute)) {
                             return $attribute;
@@ -108,6 +130,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                 ),
             ]) ?>
+            <?php if ($bulkDeleteEnabled): ?>
+                <?= Html::endForm() ?>
+            <?php endif; ?>
         </div>
     </div>
 </section>

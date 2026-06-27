@@ -54,4 +54,4 @@ RUN chown -R www-data:www-data /var/www/html/runtime /var/www/html/web/assets
 # reach php-fpm on 9000 internally when RUN_PHP_FPM=true.
 EXPOSE 8080
 
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisor.conf"]
+CMD ["/bin/sh", "-c", "rm -rf /var/www/html/runtime/cache/* /var/www/html/runtime/debug/* /var/www/html/web/assets/* && mkdir -p /var/www/html/runtime/cache /var/www/html/runtime/debug /var/www/html/web/assets && chown -R www-data:www-data /var/www/html/runtime /var/www/html/web/assets && exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisor.conf"]

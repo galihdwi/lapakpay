@@ -36,6 +36,21 @@ class AdminRepository
         return (bool) $model->delete();
     }
 
+    public function deleteMany(string $modelClass, array $ids): int
+    {
+        $this->assertActiveRecord($modelClass);
+        $deleted = 0;
+
+        foreach (array_unique(array_filter($ids)) as $id) {
+            $model = $modelClass::findOne((string) $id);
+            if ($model !== null && $model->delete() !== false) {
+                $deleted++;
+            }
+        }
+
+        return $deleted;
+    }
+
     private function assertActiveRecord(string $modelClass): void
     {
         if (!is_subclass_of($modelClass, ActiveRecord::class)) {

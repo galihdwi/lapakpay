@@ -28,7 +28,12 @@ $cards = [
             <h1 class="section-title">Admin AksesPay</h1>
             <p class="lp-muted mb-0">Kelola operasional topup, PPOB, reseller, supplier, dan payment gateway.</p>
         </div>
-        <?= Html::a('Laporan', ['reports'], ['class' => 'lp-btn lp-btn-primary']) ?>
+        <div class="d-flex flex-wrap gap-2">
+            <?= Html::beginForm(['sync-products', 'provider' => 'vip-payment'], 'post') ?>
+                <?= Html::submitButton('Sync Produk VIP Payment', ['class' => 'lp-btn lp-btn-ghost']) ?>
+            <?= Html::endForm() ?>
+            <?= Html::a('Laporan', ['reports'], ['class' => 'lp-btn lp-btn-primary']) ?>
+        </div>
     </div>
 
     <div class="admin-stats-grid">

@@ -1282,6 +1282,30 @@ a {
     overflow-x: auto;
 }
 
+.admin-bulk-form {
+    min-width: 100%;
+}
+
+.admin-bulk-toolbar {
+    align-items: center;
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: .8rem;
+}
+
+.admin-checkbox-cell {
+    text-align: center;
+    width: 48px;
+}
+
+.admin-row-checkbox,
+.admin-checkbox-cell input[type="checkbox"] {
+    accent-color: var(--lp-primary);
+    cursor: pointer;
+    height: 18px;
+    width: 18px;
+}
+
 .admin-table {
     --bs-table-bg: transparent;
     --bs-table-striped-bg: rgba(15, 23, 42, .28);
@@ -1431,7 +1455,23 @@ a {
     flex: 1;
 }
 
-.login-split-card,
+.site-login {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    padding: clamp(1rem, 4vw, 3rem) 0;
+}
+
+.login-split-card {
+    background: linear-gradient(180deg, rgba(30, 41, 59, .92), rgba(17, 28, 51, .92));
+    border: 1px solid var(--lp-border);
+    border-radius: var(--lp-radius-lg);
+    box-shadow: var(--lp-shadow);
+    max-width: 940px;
+    overflow: hidden;
+    width: min(100%, 940px);
+}
+
 .card {
     background-color: var(--lp-card);
     border: 1px solid var(--lp-border);
@@ -1439,15 +1479,149 @@ a {
 }
 
 .login-brand-panel {
-    background: linear-gradient(135deg, var(--lp-primary), var(--lp-secondary));
-    min-height: 480px;
+    background:
+        linear-gradient(180deg, rgba(15, 23, 42, .18), rgba(15, 23, 42, .34)),
+        linear-gradient(135deg, var(--lp-primary), var(--lp-secondary));
+    color: #fff;
+    min-height: 560px;
     position: relative;
 }
 
-.login-btn {
+.login-brand-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 2.5rem;
+    width: 100%;
+}
+
+.login-brand-mark,
+.login-mobile-brand span {
+    align-items: center;
+    background: rgba(255, 255, 255, .16);
+    border: 1px solid rgba(255, 255, 255, .24);
+    border-radius: 16px;
+    display: inline-flex;
+    font-weight: 950;
+    height: 48px;
+    justify-content: center;
+    width: 48px;
+}
+
+.login-brand-title {
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 950;
+    line-height: 1.02;
+    margin-bottom: 1rem;
+}
+
+.login-brand-text {
+    color: rgba(255, 255, 255, .78);
+    font-size: 1rem;
+    line-height: 1.7;
+    margin: 0;
+}
+
+.login-brand-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .55rem;
+}
+
+.login-brand-pills span {
+    background: rgba(255, 255, 255, .14);
+    border: 1px solid rgba(255, 255, 255, .22);
+    border-radius: 999px;
+    font-size: .82rem;
+    font-weight: 850;
+    padding: .5rem .75rem;
+}
+
+.login-form-panel {
+    padding: clamp(1.3rem, 5vw, 3rem);
+}
+
+.login-head {
+    margin-bottom: 1.5rem;
+}
+
+.login-head h1 {
+    color: var(--lp-text);
+    font-size: clamp(1.6rem, 4vw, 2.35rem);
+    font-weight: 950;
+    margin-bottom: .45rem;
+}
+
+.login-mobile-brand {
+    align-items: center;
+    display: flex;
+    gap: .7rem;
+    margin-bottom: 1.2rem;
+}
+
+.login-mobile-brand span {
     background: linear-gradient(135deg, var(--lp-primary), var(--lp-secondary));
-    border: none;
-    font-weight: 800;
+    border: 0;
+    color: #fff;
+    height: 42px;
+    width: 42px;
+}
+
+.login-mobile-brand strong {
+    color: var(--lp-text);
+    font-size: 1.05rem;
+    font-weight: 950;
+}
+
+.login-form {
+    display: grid;
+    gap: 1rem;
+}
+
+.login-field {
+    margin: 0;
+}
+
+.login-input-group .input-group-text {
+    background: rgba(15, 23, 42, .72);
+    border: 1px solid var(--lp-border);
+    border-right: 0;
+    border-radius: 14px 0 0 14px;
+    color: var(--lp-muted);
+    min-width: 48px;
+    justify-content: center;
+}
+
+.login-input-group .lp-input {
+    border-left: 0;
+    border-radius: 0 14px 14px 0;
+}
+
+.login-remember .form-check {
+    align-items: center;
+    display: flex;
+    gap: .55rem;
+    margin: 0;
+}
+
+.login-remember .form-check-input {
+    background-color: rgba(15, 23, 42, .72);
+    border-color: var(--lp-border);
+    margin: 0;
+}
+
+.login-remember .form-check-input:checked {
+    background-color: var(--lp-primary);
+    border-color: var(--lp-primary);
+}
+
+.login-remember .form-check-label {
+    color: var(--lp-muted);
+    font-weight: 750;
+}
+
+.login-btn {
+    min-height: 50px;
 }
 
 .site-contact textarea.form-control {

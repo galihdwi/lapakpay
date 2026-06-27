@@ -592,6 +592,129 @@ a {
     margin-top: .2rem;
 }
 
+.payment-result-page {
+    padding: clamp(1rem, 5vw, 4rem) 0;
+}
+
+.payment-result-card {
+    align-items: center;
+    background: linear-gradient(180deg, rgba(30, 41, 59, .9), rgba(17, 28, 51, .9));
+    border: 1px solid var(--lp-border);
+    border-radius: var(--lp-radius-lg);
+    box-shadow: var(--lp-shadow);
+    display: grid;
+    gap: clamp(1rem, 4vw, 2rem);
+    grid-template-columns: auto minmax(0, 1fr);
+    margin-bottom: 1rem;
+    padding: clamp(1.2rem, 5vw, 2.5rem);
+}
+
+.payment-result-icon {
+    align-items: center;
+    background: linear-gradient(135deg, var(--lp-success), var(--lp-secondary));
+    border-radius: 28px;
+    color: #fff;
+    display: inline-flex;
+    height: clamp(72px, 12vw, 112px);
+    justify-content: center;
+    width: clamp(72px, 12vw, 112px);
+}
+
+.payment-result-pending .payment-result-icon {
+    background: linear-gradient(135deg, #F59E0B, var(--lp-secondary));
+}
+
+.payment-result-expired .payment-result-icon,
+.payment-result-failed .payment-result-icon {
+    background: linear-gradient(135deg, #EF4444, #F97316);
+}
+
+.payment-result-icon .bi {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+}
+
+.payment-result-content h1 {
+    color: var(--lp-text);
+    font-size: clamp(2rem, 6vw, 4rem);
+    font-weight: 950;
+    letter-spacing: 0;
+    line-height: .95;
+    margin: .35rem 0 .8rem;
+}
+
+.payment-result-content p {
+    color: var(--lp-muted);
+    line-height: 1.7;
+    margin: 0;
+    max-width: 660px;
+}
+
+.payment-result-details {
+    display: grid;
+    gap: .75rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin: 1.25rem 0;
+}
+
+.payment-result-details div {
+    background: rgba(15, 23, 42, .52);
+    border: 1px solid var(--lp-border);
+    border-radius: var(--lp-radius-sm);
+    padding: .85rem;
+}
+
+.payment-result-details span {
+    color: var(--lp-muted);
+    display: block;
+    font-size: .78rem;
+    font-weight: 850;
+    margin-bottom: .25rem;
+}
+
+.payment-result-details strong {
+    color: var(--lp-text);
+    display: block;
+    font-weight: 950;
+    overflow-wrap: anywhere;
+}
+
+.payment-result-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .7rem;
+}
+
+.payment-next-steps {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.payment-next-steps article {
+    background: linear-gradient(180deg, rgba(30, 41, 59, .86), rgba(17, 28, 51, .86));
+    border: 1px solid var(--lp-border);
+    border-radius: var(--lp-radius-md);
+    padding: 1rem;
+}
+
+.payment-next-steps .bi {
+    color: var(--lp-success);
+    font-size: 1.35rem;
+}
+
+.payment-next-steps h2 {
+    color: var(--lp-text);
+    font-size: 1rem;
+    font-weight: 950;
+    margin: .7rem 0 .4rem;
+}
+
+.payment-next-steps p {
+    color: var(--lp-muted);
+    line-height: 1.6;
+    margin: 0;
+}
+
 .product-grid {
     display: grid;
     gap: 1rem;
@@ -2249,6 +2372,16 @@ a {
     }
 
     .howtopup-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .payment-result-card {
+        align-items: flex-start;
+        grid-template-columns: 1fr;
+    }
+
+    .payment-result-details,
+    .payment-next-steps {
         grid-template-columns: 1fr;
     }
 }

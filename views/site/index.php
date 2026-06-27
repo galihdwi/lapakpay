@@ -1,6 +1,7 @@
 <?php
 
 /** @var yii\web\View $this */
+/** @var app\models\Banner[] $heroBanners */
 /** @var app\models\Category[] $favoriteCategories */
 
 use yii\helpers\Html;
@@ -10,18 +11,45 @@ $this->title = 'AksesPay - Topup Game, PPOB, Streaming Premium';
 $this->params['meta_description'] = 'Topup game, PPOB, dan streaming premium cepat dengan harga kompetitif dan pembayaran lengkap.';
 $this->params['meta_keywords'] = 'topup game, mobile legends, free fire, ppob, netflix, spotify, aksespay';
 
-$heroSlides = [
-    ['title' => 'Promo Diamond ML', 'copy' => 'Diskon sampai 35% untuk weekly pass dan diamond populer.', 'tag' => 'Mulai Rp1.000', 'image' => 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1400&q=80'],
-    ['title' => 'Free Fire Spesial', 'copy' => 'Topup instan untuk push rank malam ini.', 'tag' => 'Bonus Voucher', 'image' => 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=1400&q=80'],
-    ['title' => 'Spotify & Netflix', 'copy' => 'Akun premium legal, aktif cepat, harga reseller tersedia.', 'tag' => 'Streaming Premium', 'image' => 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=1400&q=80'],
-];
-
 $fallbackCategories = [
     ['name' => 'Mobile Legends', 'slug' => 'mobile-legends', 'image' => 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=600&q=80'],
     ['name' => 'Free Fire', 'slug' => 'free-fire', 'image' => 'https://images.unsplash.com/photo-1600861194942-f883de0dfe96?auto=format&fit=crop&w=600&q=80'],
     ['name' => 'PUBG Mobile', 'slug' => 'pubg-mobile', 'image' => 'https://images.unsplash.com/photo-1560253023-3ec5d502959f?auto=format&fit=crop&w=600&q=80'],
     ['name' => 'Netflix', 'slug' => 'netflix', 'image' => 'https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?auto=format&fit=crop&w=600&q=80'],
 ];
+
+$resolveAssetUrl = static function (?string $path): string {
+    $path = trim((string) $path);
+    if ($path === '') {
+        return '';
+    }
+
+    if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://') || str_starts_with($path, '/')) {
+        return $path;
+    }
+
+    return Url::to('@web/' . ltrim($path, '/'));
+};
+
+$activeHeroBanners = array_values(array_filter($heroBanners, static fn ($banner): bool => trim((string) $banner->image) !== ''));
+
+$heroSlides = !empty($activeHeroBanners)
+    ? array_map(static fn ($banner): array => [
+        'title' => (string) $banner->title,
+        'copy' => (string) $banner->subtitle,
+        'tag' => (string) $banner->tag,
+        'image' => $resolveAssetUrl($banner->image),
+        'link' => (string) $banner->link,
+    ], $activeHeroBanners)
+    : [
+        [
+            'title' => 'AksesPay',
+            'copy' => 'Topup game, PPOB, dan streaming premium cepat dengan pembayaran lengkap.',
+            'tag' => 'Promo Pilihan',
+            'image' => 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1400&q=80',
+            'link' => '#popular',
+        ],
+    ];
 
 $categoryCards = !empty($favoriteCategories)
     ? array_map(static fn ($category): array => [
@@ -31,17 +59,13 @@ $categoryCards = !empty($favoriteCategories)
     ], $favoriteCategories)
     : $fallbackCategories;
 
-$resolveCategoryImage = static function (?string $image): string {
-    $image = trim((string) $image);
-    if ($image === '') {
+$resolveCategoryImage = static function (?string $image) use ($resolveAssetUrl): string {
+    $resolved = $resolveAssetUrl($image);
+    if ($resolved === '') {
         return 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=600&q=80';
     }
 
-    if (str_starts_with($image, 'http://') || str_starts_with($image, 'https://') || str_starts_with($image, '/')) {
-        return $image;
-    }
-
-    return Url::to('@web/' . ltrim($image, '/'));
+    return $resolved;
 };
 
 $popularProducts = [
@@ -68,12 +92,15 @@ $flashSales = [
                         <div class="carousel-item <?= $index === 0 ? 'active' : '' ?>">
                             <div class="hero-slide" style="--hero-image: url('<?= Html::encode($slide['image']) ?>')">
                                 <div class="hero-content">
-                                    <span class="hero-pill"><?= Html::encode($slide['tag']) ?></span>
+                                    <?php if ($slide['tag'] !== ''): ?>
+                                        <span class="hero-pill"><?= Html::encode($slide['tag']) ?></span>
+                                    <?php endif; ?>
                                     <h2><?= Html::encode($slide['title']) ?></h2>
-                                    <p><?= Html::encode($slide['copy']) ?></p>
+                                    <?php if ($slide['copy'] !== ''): ?>
+                                        <p><?= Html::encode($slide['copy']) ?></p>
+                                    <?php endif; ?>
                                     <div class="d-flex flex-wrap gap-2">
-                                        <a href="#popular" class="lp-btn lp-btn-primary">Topup Sekarang</a>
-                                        <a href="#popular" class="lp-btn lp-btn-ghost">Mulai dari Rp1.000</a>
+                                        <a href="<?= Html::encode($slide['link'] ?: '#popular') ?>" class="lp-btn lp-btn-primary">Topup Sekarang</a>
                                     </div>
                                 </div>
                             </div>

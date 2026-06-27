@@ -1213,6 +1213,30 @@ a {
     padding: 1rem;
 }
 
+.admin-upload-preview {
+    align-items: center;
+    background: rgba(15, 23, 42, .48);
+    border: 1px solid var(--lp-border);
+    border-radius: var(--lp-radius-sm);
+    display: flex;
+    gap: .75rem;
+    padding: .65rem;
+}
+
+.admin-upload-preview img {
+    aspect-ratio: 16 / 9;
+    border-radius: 8px;
+    height: 64px;
+    object-fit: cover;
+    width: 112px;
+}
+
+.admin-upload-preview span {
+    color: var(--lp-muted);
+    font-size: .82rem;
+    overflow-wrap: anywhere;
+}
+
 .admin-stat-card {
     min-height: 104px;
     padding: 1rem;

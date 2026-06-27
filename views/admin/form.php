@@ -8,6 +8,7 @@
 use app\controllers\AdminController;
 use yii\bootstrap5\ActiveForm;
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 $isNew = $model->isNewRecord;
 $hasFileInput = !empty(array_filter($config['fields'], static fn (array $field): bool => ($field[1] ?? null) === 'file'));
@@ -46,6 +47,19 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?= $form->field($model, $attribute)->textarea(['rows' => 5, 'class' => 'form-control lp-input font-monospace']) ?>
                 <?php elseif ($type === 'file'): ?>
                     <?= $form->field($model, $attribute)->fileInput(['class' => 'form-control lp-input']) ?>
+                    <?php
+                    $targetAttribute = $config['uploadAttributes'][$attribute]['targetAttribute'] ?? null;
+                    $currentFile = $targetAttribute !== null ? trim((string) $model->{$targetAttribute}) : '';
+                    $currentUrl = $currentFile !== '' && !str_starts_with($currentFile, 'http://') && !str_starts_with($currentFile, 'https://') && !str_starts_with($currentFile, '/')
+                        ? Url::to('@web/' . ltrim($currentFile, '/'))
+                        : $currentFile;
+                    ?>
+                    <?php if ($currentUrl !== ''): ?>
+                        <div class="admin-upload-preview mt-2">
+                            <img src="<?= Html::encode($currentUrl) ?>" alt="Preview <?= Html::encode(AdminController::labelFromAttribute($targetAttribute ?: $attribute)) ?>">
+                            <span><?= Html::encode($currentFile) ?></span>
+                        </div>
+                    <?php endif; ?>
                 <?php else: ?>
                     <?= $form->field($model, $attribute)->input($type, $options) ?>
                 <?php endif; ?>

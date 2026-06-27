@@ -284,7 +284,7 @@ class AdminController extends Controller
 
             $targetAttribute = $uploadConfig['targetAttribute'] ?? $attribute;
             $directory = $uploadConfig['directory'] ?? 'uploads';
-            $baseName = Inflector::slug((string) ($model->name ?? pathinfo($file->baseName, PATHINFO_FILENAME)));
+            $baseName = Inflector::slug((string) ($model->name ?? $model->title ?? pathinfo($file->baseName, PATHINFO_FILENAME)));
             $fileName = $baseName . '-' . date('YmdHis') . '.' . strtolower($file->extension);
             $relativePath = trim($directory, '/') . '/' . $fileName;
             $absoluteDirectory = Yii::getAlias('@webroot/' . trim($directory, '/'));
@@ -457,13 +457,25 @@ class AdminController extends Controller
                 'icon' => 'image',
                 'class' => Banner::class,
                 'searchAttributes' => ['title', 'status'],
-                'columns' => ['title', 'image', 'link', 'sort_order', 'status'],
+                'columns' => ['title', 'tag', 'image', 'link', 'sort_order', 'status'],
                 'fields' => [
                     ['title', 'text'],
-                    ['image', 'text'],
-                    ['link', 'text'],
+                    ['subtitle', 'textarea'],
+                    ['tag', 'text'],
+                    [
+                        'imageFile',
+                        'file',
+                        'hint' => 'Upload gambar banner. File disimpan ke web/uploads/banners.',
+                    ],
+                    ['link', 'text', 'hint' => 'Opsional. Contoh: /site/products?slug=mobile-legends atau URL lengkap.'],
                     ['sort_order', 'number'],
                     ['status', 'dropDownList', 'items' => $statusOptions],
+                ],
+                'uploadAttributes' => [
+                    'imageFile' => [
+                        'targetAttribute' => 'image',
+                        'directory' => 'uploads/banners',
+                    ],
                 ],
             ],
             'categories' => [

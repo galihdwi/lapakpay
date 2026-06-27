@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace app\controllers;
 
 use Yii;
+use app\models\Banner;
 use app\models\ContactForm;
 use app\repositories\ProductRepository;
 use app\repositories\TransactionRepository;
@@ -89,6 +90,10 @@ class SiteController extends Controller
     public function actionIndex(): string
     {
         return $this->render('index', [
+            'heroBanners' => Banner::find()
+                ->where(['status' => 'active'])
+                ->orderBy(['sort_order' => SORT_ASC, 'created_at' => SORT_DESC])
+                ->all(),
             'favoriteCategories' => $this->productService->getFavoriteCategories(),
         ]);
     }

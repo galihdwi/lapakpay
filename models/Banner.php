@@ -6,6 +6,8 @@ use yii\mongodb\ActiveRecord;
 
 class Banner extends ActiveRecord
 {
+    public $imageFile;
+
     public static function collectionName()
     {
         return 'banners';
@@ -16,6 +18,8 @@ class Banner extends ActiveRecord
         return [
             '_id',
             'title',
+            'subtitle',
+            'tag',
             'image',
             'link',
             'sort_order',
@@ -28,8 +32,10 @@ class Banner extends ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'image'], 'required'],
-            [['title', 'image', 'link', 'status'], 'string'],
+            [['title'], 'required'],
+            [['image'], 'required', 'when' => static fn (self $model): bool => $model->imageFile === null],
+            [['title', 'subtitle', 'tag', 'image', 'link', 'status'], 'string'],
+            [['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => ['jpg', 'jpeg', 'png', 'webp', 'gif']],
             [['sort_order'], 'integer'],
             [['sort_order'], 'default', 'value' => 0],
             [['status'], 'default', 'value' => 'active'],

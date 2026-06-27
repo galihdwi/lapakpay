@@ -16,25 +16,25 @@ use yii\helpers\Html;
                     <strong class="text-white">AksesPay</strong>
                 </div>
                 <p class="lp-muted mb-3">Topup game, PPOB, dan streaming premium dengan proses otomatis, pembayaran aman, dan dukungan reseller.</p>
-                <div class="d-flex flex-wrap gap-2">
-                    <span class="lp-social">IG</span>
-                    <span class="lp-social">TT</span>
-                    <span class="lp-social">X</span>
-                    <span class="lp-social">YT</span>
+                <div class="lp-social-row">
+                    <a href="#" class="lp-social" aria-label="Instagram"><i class="bi bi-instagram" aria-hidden="true"></i></a>
+                    <a href="#" class="lp-social" aria-label="TikTok"><i class="bi bi-music-note-beamed" aria-hidden="true"></i></a>
+                    <a href="#" class="lp-social" aria-label="X"><i class="bi bi-twitter-x" aria-hidden="true"></i></a>
+                    <a href="#" class="lp-social" aria-label="YouTube"><i class="bi bi-youtube" aria-hidden="true"></i></a>
                 </div>
             </div>
             <div class="col-6 col-lg-2">
                 <h3 class="lp-footer-title">Kategori</h3>
-                <a href="#categories">Games</a>
-                <a href="#categories">Streaming</a>
-                <a href="#categories">PPOB</a>
-                <a href="#categories">Voucher</a>
+                <?= Html::a('Semua Kategori', ['/site/categories']) ?>
+                <?= Html::a('Games', ['/site/categories', 'q' => 'game']) ?>
+                <?= Html::a('Streaming', ['/site/categories', 'q' => 'streaming']) ?>
+                <?= Html::a('PPOB', ['/site/categories', 'q' => 'ppob']) ?>
             </div>
             <div class="col-6 col-lg-2">
                 <h3 class="lp-footer-title">Bantuan</h3>
-                <a href="#popular">Cara Topup</a>
+                <?= Html::a('Cara Topup', ['/site/cara-topup']) ?>
                 <?= Html::a('Track Order', ['/site/track-order']) ?>
-                <a href="#contact">Kontak</a>
+                <?= Html::a('Kontak', ['/site/contact']) ?>
             </div>
             <div class="col-lg-4">
                 <h3 class="lp-footer-title">Metode Pembayaran</h3>

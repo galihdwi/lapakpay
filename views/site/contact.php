@@ -8,158 +8,120 @@ use yii\bootstrap5\ActiveForm;
 use yii\bootstrap5\Html;
 use yii\captcha\Captcha;
 
-$this->title = 'Contact us';
+$this->title = 'Kontak AksesPay';
 $this->params['breadcrumbs'][] = $this->title;
-$this->params['meta_description'] = 'Get in touch with us. Send us a message using the contact form.';
-$this->params['meta_keywords'] = 'yii, yii2, contact, support, feedback';
+$this->params['meta_description'] = 'Hubungi tim AksesPay untuk bantuan transaksi, kerja sama, dan dukungan pelanggan.';
+$this->params['meta_keywords'] = 'kontak aksespay, bantuan topup, support aksespay, track order';
 $htmlIcon = <<<HTML
-{label}<div class="input-group"><span class="input-group-text" aria-hidden="true">%s</span>{input}</div>{error}{hint}
+{label}<div class="input-group contact-input-group"><span class="input-group-text" aria-hidden="true"><i class="bi %s"></i></span>{input}</div>{error}{hint}
 HTML;
-$labelOptions = ['class' => 'form-label fw-semibold small'];
+$labelOptions = ['class' => 'form-label'];
 ?>
+
 <?php if (Yii::$app->session->hasFlash('success')): ?>
-
-<div class="site-contact-success d-flex align-items-center justify-content-center text-center">
-    <div class="site-contact-success-content mx-auto">
-        <h1 class="display-6 fw-semibold mb-3">Message sent</h1>
-
-        <?php if (YII_DEBUG && Yii::$app->mailer->useFileTransport): ?>
-            <p class="text-body-tertiary small mb-4">
-                Development mode: email saved under
-                <code><?= Yii::getAlias(Yii::$app->mailer->fileTransportPath) ?></code>
-            </p>
-        <?php endif; ?>
-
-        <?= Html::a(
-            'Send another message',
-            ['contact'],
-            ['class' => 'btn btn-outline-primary btn-lg'],
-        ) ?>
-    </div>
-</div>
-
-<?php else: ?>
-
-<div class="site-contact d-flex align-items-center justify-content-center py-5">
-    <div class="card border-0 overflow-hidden login-split-card login-split-card-wide">
-        <div class="row g-0">
-
-            <!-- Brand panel -->
-            <div class="col-md-4 d-none d-md-flex login-brand-panel text-white">
-                <div class="d-flex flex-column justify-content-between p-4 p-lg-5 w-100">
-                    <div>
-                        <?= Html::img(
-                            Yii::getAlias('@web/images/yii3_full_white_for_dark.svg'),
-                            [
-                                'alt' => 'Yii Framework',
-                                'class' => 'mb-4',
-                                'height' => 40,
-                            ],
-                        ) ?>
-                    </div>
-                    <div>
-                        <h2 class="fw-bold mb-3 login-brand-title">
-                            Get In<br>Touch
-                        </h2>
-                        <p class="opacity-75 mb-0 login-brand-text">
-                            Have a question or business inquiry? We would love to hear from you.
-                        </p>
-                    </div>
-                </div>
+    <section class="site-contact-success">
+        <div class="container-xl">
+            <div class="contact-success-panel">
+                <span class="contact-success-mark"><i class="bi bi-check-lg" aria-hidden="true"></i></span>
+                <h1>Pesan terkirim</h1>
+                <p><?= Html::encode(Yii::$app->session->getFlash('success')) ?></p>
+                <?= Html::a('Kirim pesan lain', ['contact'], ['class' => 'lp-btn lp-btn-primary']) ?>
             </div>
-
-            <!-- Form panel -->
-            <div class="col-md-8">
-                <div class="p-4 p-lg-5">
-                    <div class="text-center mb-4">
-                        <div class="d-md-none mb-3">
-                            <?= Html::img(
-                                Yii::getAlias('@web/images/yii3_full_black_for_light.svg'),
-                                [
-                                    'alt' => 'Yii Framework',
-                                    'class' => 'login-mobile-logo',
-                                    'height' => 36,
-                                ],
-                            ) ?>
-                        </div>
-                        <h1 class="h3 fw-bold mb-1"><?= Html::encode($this->title) ?></h1>
-                        <p class="text-body-secondary small">Fill out the form below and we will get back to you</p>
+        </div>
+    </section>
+<?php else: ?>
+    <section class="site-contact">
+        <div class="container-xl">
+            <div class="contact-layout">
+                <aside class="contact-info-panel">
+                    <div>
+                        <div class="section-kicker text-white-50">Bantuan AksesPay</div>
+                        <h1>Butuh bantuan transaksi?</h1>
+                        <p>Kirim detail kendala, nomor invoice, atau kebutuhan kerja sama. Tim kami akan mengecek dan menghubungi kamu kembali.</p>
                     </div>
 
-                    <?php $form = ActiveForm::begin(['id' => 'contact-form']); ?>
-
-                    <div class="row">
-                        <div class="col-sm-6 mb-3">
-                            <?= $form->field($model, 'name', [
-                                'options' => ['class' => 'mb-0'],
-                                'template' => sprintf($htmlIcon, '&#128100;'),
-                                'inputOptions' => [
-                                    'class' => 'form-control',
-                                    'placeholder' => 'Name',
-                                    'autofocus' => true,
-                                ],
-                            ])->label('Your Name', $labelOptions) ?>
+                    <div class="contact-info-list">
+                        <div>
+                            <span>Email</span>
+                            <strong><?= Html::encode(Yii::$app->params['adminEmail'] ?? 'support@aksespay.id') ?></strong>
                         </div>
+                        <div>
+                            <span>Track Order</span>
+                            <?= Html::a('Cek nomor invoice', ['/site/track-order']) ?>
+                        </div>
+                        <div>
+                            <span>Jam Bantuan</span>
+                            <strong>Setiap hari, 09.00 - 22.00 WIB</strong>
+                        </div>
+                    </div>
+                </aside>
 
-                        <div class="col-sm-6 mb-3">
-                            <?= $form->field($model, 'email', [
-                                'options' => ['class' => 'mb-0'],
-                                'template' => sprintf($htmlIcon, '&#9993;'),
-                                'inputOptions' => [
-                                    'class' => 'form-control',
-                                    'placeholder' => 'email@example.com',
-                                ],
-                            ])->label('Your Email', $labelOptions) ?>
+                <div class="contact-form-panel">
+                    <div class="contact-head">
+                        <span class="contact-brand-mark">AP</span>
+                        <div>
+                            <h2>Kirim pesan</h2>
+                            <p class="lp-muted mb-0">Isi form berikut dengan jelas agar kami bisa bantu lebih cepat.</p>
                         </div>
                     </div>
 
-                    <div class="mb-3">
+                    <?php $form = ActiveForm::begin(['id' => 'contact-form', 'options' => ['class' => 'contact-form']]); ?>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <?= $form->field($model, 'name', [
+                                    'template' => sprintf($htmlIcon, 'bi-person'),
+                                    'inputOptions' => [
+                                        'class' => 'form-control lp-input',
+                                        'placeholder' => 'Nama lengkap',
+                                        'autofocus' => true,
+                                    ],
+                                ])->label('Nama', $labelOptions) ?>
+                            </div>
+
+                            <div class="col-md-6">
+                                <?= $form->field($model, 'email', [
+                                    'template' => sprintf($htmlIcon, 'bi-envelope'),
+                                    'inputOptions' => [
+                                        'class' => 'form-control lp-input',
+                                        'placeholder' => 'email@example.com',
+                                        'autocomplete' => 'email',
+                                    ],
+                                ])->label('Email', $labelOptions) ?>
+                            </div>
+                        </div>
+
                         <?= $form->field($model, 'subject', [
-                            'options' => ['class' => 'mb-0'],
-                            'template' => sprintf($htmlIcon, '&#128172;'),
+                            'template' => sprintf($htmlIcon, 'bi-chat-left-text'),
                             'inputOptions' => [
-                                'class' => 'form-control',
-                                'placeholder' => 'Subject',
+                                'class' => 'form-control lp-input',
+                                'placeholder' => 'Contoh: Pembayaran belum masuk',
                             ],
-                        ])->label('Subject', $labelOptions) ?>
-                    </div>
+                        ])->label('Subjek', $labelOptions) ?>
 
-                    <div class="mb-3">
                         <?= $form->field($model, 'body', [
-                            'options' => ['class' => 'mb-0'],
                             'template' => '{label}{input}{error}{hint}',
                             'inputOptions' => [
-                                'class' => 'form-control',
-                                'placeholder' => 'Your message...',
+                                'class' => 'form-control lp-input contact-message',
+                                'placeholder' => 'Tulis pesan dan nomor invoice jika ada.',
                             ],
-                        ])->textarea()->label('Message', $labelOptions) ?>
-                    </div>
+                        ])->textarea(['rows' => 6])->label('Pesan', $labelOptions) ?>
 
-                    <div class="d-flex align-items-center gap-3 flex-wrap">
-                        <?= $form->field($model, 'verifyCode', [
-                            'enableLabel' => false,
-                            'options' => ['class' => ''],
-                            'inputOptions' => ['aria-label' => 'Verification code'],
-                        ])->widget(Captcha::class, [
-                            'template' => '<div class="d-flex align-items-center gap-2">{image}{input}</div>',
-                        ]) ?>
+                        <div class="contact-captcha-row">
+                            <?= $form->field($model, 'verifyCode', [
+                                'enableLabel' => false,
+                                'inputOptions' => ['class' => 'form-control lp-input', 'placeholder' => 'Kode verifikasi'],
+                            ])->widget(Captcha::class, [
+                                'template' => '<div class="contact-captcha">{image}{input}</div>',
+                            ]) ?>
 
-                        <?= Html::submitButton(
-                            'Submit',
-                            [
-                                'class' => 'btn login-btn text-white px-4 ms-auto',
+                            <?= Html::submitButton('Kirim Pesan', [
+                                'class' => 'lp-btn lp-btn-primary contact-submit',
                                 'name' => 'contact-button',
-                            ],
-                        ) ?>
-                    </div>
-
+                            ]) ?>
+                        </div>
                     <?php ActiveForm::end(); ?>
-
                 </div>
             </div>
-
         </div>
-    </div>
-</div>
-
+    </section>
 <?php endif; ?>

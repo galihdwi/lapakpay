@@ -93,6 +93,9 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'contact' => 'site/contact',
+                'categories' => 'site/categories',
+                'cara-topup' => 'site/cara-topup',
                 'track-order' => 'site/track-order',
                 'games/<slug:[\w-]+>' => 'site/products',
             ],

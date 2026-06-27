@@ -48,6 +48,11 @@ class ProductService
         return $this->categoryRepository->findFavoriteActive($limit);
     }
 
+    public function getActiveCategories(?string $search = null): array
+    {
+        return $this->categoryRepository->findActive($search);
+    }
+
     public function getProductsByBrand(string $brand): array
     {
         return $this->productRepository->findByBrand($brand);

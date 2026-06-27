@@ -181,6 +181,21 @@ class SiteController extends Controller
         ]);
     }
 
+    public function actionCategories(?string $q = null): string
+    {
+        $query = trim((string) ($q ?: Yii::$app->request->get('q', '')));
+
+        return $this->render('categories', [
+            'query' => $query,
+            'categories' => $this->productService->getActiveCategories($query),
+        ]);
+    }
+
+    public function actionCaraTopup(): string
+    {
+        return $this->render('cara-topup');
+    }
+
     /**
      * Displays products list with categories (brands) and grouped products
      *
@@ -271,7 +286,6 @@ class SiteController extends Controller
             );
 
             $invoice = $this->transactionService->createPayment($transaction, [
-                'name' => Yii::$app->user->isGuest ? 'Customer' : (string) Yii::$app->user->identity->username,
                 'email' => $email,
             ]);
 
@@ -352,7 +366,7 @@ class SiteController extends Controller
         if ($contact) {
             Yii::$app->session->setFlash(
                 'success',
-                'Thank you for contacting us. We will respond to you as soon as possible.',
+                'Terima kasih sudah menghubungi AksesPay. Kami akan membalas secepatnya.',
             );
 
             return $this->refresh();

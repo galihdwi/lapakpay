@@ -42,3 +42,7 @@ $this->registerLinkTag(
         'href' => Yii::getAlias('@web/favicon.ico'),
     ],
 );
+$this->registerCssFile(
+    'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css',
+    ['depends' => [app\assets\AppAsset::class]],
+);

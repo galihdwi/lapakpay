@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = $this->title;
 $this->params['meta_description'] = 'Login admin AksesPay untuk mengelola produk, transaksi, dan konfigurasi layanan.';
 $this->params['meta_keywords'] = 'aksespay, login admin, topup game';
 $htmlIcon = <<<HTML
-{label}<div class="input-group login-input-group"><span class="input-group-text" aria-hidden="true">%s</span>{input}</div>{error}{hint}
+{label}<div class="input-group login-input-group"><span class="input-group-text" aria-hidden="true"><i class="bi %s"></i></span>{input}</div>{error}{hint}
 HTML;
 $labelOptions = ['class' => 'form-label'];
 ?>
@@ -53,7 +53,7 @@ $labelOptions = ['class' => 'form-label'];
 
                         <?= $form->field($model, 'username', [
                             'options' => ['class' => 'login-field'],
-                            'template' => sprintf($htmlIcon, '&#128100;'),
+                            'template' => sprintf($htmlIcon, 'bi-person'),
                             'inputOptions' => [
                                 'class' => 'form-control lp-input',
                                 'placeholder' => 'Username',
@@ -64,7 +64,7 @@ $labelOptions = ['class' => 'form-label'];
 
                         <?= $form->field($model, 'password', [
                             'options' => ['class' => 'login-field'],
-                            'template' => sprintf($htmlIcon, '&#128274;'),
+                            'template' => sprintf($htmlIcon, 'bi-lock'),
                             'inputOptions' => [
                                 'class' => 'form-control lp-input',
                                 'placeholder' => 'Password',

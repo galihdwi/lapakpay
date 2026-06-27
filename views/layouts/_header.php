@@ -15,11 +15,19 @@ $items = [
     ],
     [
         'label' => 'Kategori',
-        'url' => ['/site/index', '#' => 'categories'],
+        'url' => ['/site/categories'],
     ],
     [
         'label' => 'Track Order',
         'url' => ['/site/track-order'],
+    ],
+    [
+        'label' => 'Cara Topup',
+        'url' => ['/site/cara-topup'],
+    ],
+    [
+        'label' => 'Kontak',
+        'url' => ['/site/contact'],
     ],
     [
         'label' => 'Admin',
@@ -47,7 +55,7 @@ $items = [
         ],
     ); ?>
     <form class="lp-search d-none d-lg-flex" role="search">
-        <span aria-hidden="true">⌕</span>
+        <span aria-hidden="true"><i class="bi bi-search"></i></span>
         <input type="search" placeholder="Cari Mobile Legends, Netflix, PLN..." aria-label="Search produk">
     </form>
     <?= Nav::widget(
@@ -58,7 +66,7 @@ $items = [
         ],
     ) ?>
     <?= Html::button(
-        '◐',
+        '<i class="bi bi-circle-half" aria-hidden="true"></i>',
         [
             'id' => 'theme-toggle',
             'class' => 'btn btn-sm lp-icon-btn ms-lg-2',

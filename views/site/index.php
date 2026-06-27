@@ -25,10 +25,10 @@ $resolveAssetUrl = static function (?string $path): string {
     return Url::to('@web/' . ltrim($path, '/'));
 };
 
-$activeHeroBanners = array_values(array_filter($heroBanners, static fn ($banner): bool => trim((string) $banner->image) !== ''));
+$activeHeroBanners = array_values(array_filter($heroBanners, static fn($banner): bool => trim((string) $banner->image) !== ''));
 
 $heroSlides = !empty($activeHeroBanners)
-    ? array_map(static fn ($banner): array => [
+    ? array_map(static fn($banner): array => [
         'title' => (string) $banner->title,
         'copy' => (string) $banner->subtitle,
         'tag' => (string) $banner->tag,
@@ -45,7 +45,7 @@ $heroSlides = !empty($activeHeroBanners)
         ],
     ];
 
-$categoryCards = array_map(static fn ($category): array => [
+$categoryCards = array_map(static fn($category): array => [
     'name' => (string) $category->name,
     'slug' => (string) $category->slug,
     'image' => (string) $category->image,
@@ -121,8 +121,7 @@ $flashSales = [
                         <a
                             href="<?= Url::to(['/site/products', 'slug' => $category['slug']]) ?>"
                             class="category-card category-card-image"
-                            style="--category-image: url('<?= Html::encode($resolveCategoryImage($category['image'])) ?>')"
-                        >
+                            style="--category-image: url('<?= Html::encode($resolveCategoryImage($category['image'])) ?>')">
                             <span class="category-icon"><?= Html::encode($initials ?: 'LP') ?></span>
                             <strong><?= Html::encode($name) ?></strong>
                             <small>Produk tersedia</small>
@@ -199,7 +198,7 @@ $flashSales = [
     <section class="content-section">
         <div class="container-xl">
             <div class="value-grid">
-                <?php foreach ([['Proses Otomatis', 'Order dikirim otomatis via queue dan provider layer.'], ['Pembayaran Aman', 'Xendit primary dan Tripay fallback.'], ['Produk Lengkap', 'Game, streaming, voucher, PLN, pulsa, data.'], ['24 Jam Online', 'Checkout dan fulfillment aktif sepanjang hari.']] as $value): ?>
+                <?php foreach ([['Proses Otomatis', 'Order dikirim otomatis via queue dan provider layer.'], ['Pembayaran Aman', 'Pembayaran aman dengan payment gateway fallback.'], ['Produk Lengkap', 'Game, streaming, voucher, PLN, pulsa, data.'], ['24 Jam Online', 'Checkout dan fulfillment aktif sepanjang hari.']] as $value): ?>
                     <article class="value-card">
                         <span></span>
                         <h3><?= Html::encode($value[0]) ?></h3>

@@ -24,6 +24,26 @@ class CategoryRepository
             ->all();
     }
 
+    public function findActive(?string $search = null): array
+    {
+        $query = Category::find()
+            ->where(['status' => new Regex('^active$', 'i')]);
+
+        $search = trim((string) $search);
+        if ($search !== '') {
+            $keyword = preg_quote($search, '/');
+            $query->andWhere([
+                'or',
+                ['name' => new Regex($keyword, 'i')],
+                ['slug' => new Regex($keyword, 'i')],
+            ]);
+        }
+
+        return $query
+            ->orderBy(['name' => SORT_ASC])
+            ->all();
+    }
+
     public function save(Category $category): bool
     {
         return $category->save();

@@ -89,6 +89,11 @@ class TransactionService extends Component
 
     public function processPaidPayment(array $data, string $gatewayName): bool
     {
+        return $this->processPaymentWebhook($data, $gatewayName);
+    }
+
+    public function processPaymentWebhook(array $data, string $gatewayName): bool
+    {
         $transaction = $this->transactionRepository->findByInvoiceNumber($data['invoice_number'] ?? null);
         $payment = null;
 
@@ -104,17 +109,18 @@ class TransactionService extends Component
         }
 
         $payment = $payment ?: $this->paymentRepository->getOrCreateByInvoiceNumber((string) $transaction->invoice_number);
+        $paymentStatus = (string) ($data['status'] ?? 'pending');
         $payment->setAttributes([
             'invoice_number' => $transaction->invoice_number,
             'amount' => (float) ($data['amount'] ?? $transaction->sell_price),
             'gateway' => $gatewayName,
             'gateway_reference' => $data['gateway_reference'] ?? $payment->gateway_reference,
-            'status' => $data['status'] ?? 'paid',
+            'status' => $paymentStatus,
             'paid_at' => $data['paid_at'] ?? date('Y-m-d H:i:s'),
         ], false);
         $this->paymentRepository->save($payment, false);
 
-        if (in_array($data['status'] ?? '', ['paid', 'settled', 'success'], true) && $transaction->status === 'pending') {
+        if (in_array($paymentStatus, ['paid', 'settled', 'success'], true) && $transaction->status === 'pending') {
             $transaction->status = 'processing';
             $transaction->payment_gateway = $gatewayName;
             $this->transactionRepository->save($transaction, false, ['status', 'payment_gateway']);
@@ -122,6 +128,11 @@ class TransactionService extends Component
             Yii::$app->get('queue')->push(new SupplierOrderJob([
                 'transaction_id' => (string) $transaction->_id,
             ]));
+        } elseif (in_array($paymentStatus, ['failed', 'expired', 'cancelled'], true) && $transaction->status === 'pending') {
+            $transaction->status = $paymentStatus;
+            $transaction->payment_gateway = $gatewayName;
+            $transaction->notes = $data['message'] ?? $transaction->notes;
+            $this->transactionRepository->save($transaction, false, ['status', 'payment_gateway', 'notes']);
         }
 
         return true;

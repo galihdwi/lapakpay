@@ -3,6 +3,7 @@
 /** @var yii\web\View $this */
 /** @var app\models\Banner[] $heroBanners */
 /** @var app\models\Category[] $favoriteCategories */
+/** @var array[] $popularCategories */
 
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -10,13 +11,6 @@ use yii\helpers\Url;
 $this->title = 'AksesPay - Topup Game, PPOB, Streaming Premium';
 $this->params['meta_description'] = 'Topup game, PPOB, dan streaming premium cepat dengan harga kompetitif dan pembayaran lengkap.';
 $this->params['meta_keywords'] = 'topup game, mobile legends, free fire, ppob, netflix, spotify, aksespay';
-
-$fallbackCategories = [
-    ['name' => 'Mobile Legends', 'slug' => 'mobile-legends', 'image' => 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=600&q=80'],
-    ['name' => 'Free Fire', 'slug' => 'free-fire', 'image' => 'https://images.unsplash.com/photo-1600861194942-f883de0dfe96?auto=format&fit=crop&w=600&q=80'],
-    ['name' => 'PUBG Mobile', 'slug' => 'pubg-mobile', 'image' => 'https://images.unsplash.com/photo-1560253023-3ec5d502959f?auto=format&fit=crop&w=600&q=80'],
-    ['name' => 'Netflix', 'slug' => 'netflix', 'image' => 'https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?auto=format&fit=crop&w=600&q=80'],
-];
 
 $resolveAssetUrl = static function (?string $path): string {
     $path = trim((string) $path);
@@ -51,13 +45,11 @@ $heroSlides = !empty($activeHeroBanners)
         ],
     ];
 
-$categoryCards = !empty($favoriteCategories)
-    ? array_map(static fn ($category): array => [
-        'name' => (string) $category->name,
-        'slug' => (string) $category->slug,
-        'image' => (string) $category->image,
-    ], $favoriteCategories)
-    : $fallbackCategories;
+$categoryCards = array_map(static fn ($category): array => [
+    'name' => (string) $category->name,
+    'slug' => (string) $category->slug,
+    'image' => (string) $category->image,
+], array_slice($favoriteCategories, 0, 10));
 
 $resolveCategoryImage = static function (?string $image) use ($resolveAssetUrl): string {
     $resolved = $resolveAssetUrl($image);
@@ -67,13 +59,6 @@ $resolveCategoryImage = static function (?string $image) use ($resolveAssetUrl):
 
     return $resolved;
 };
-
-$popularProducts = [
-    ['Mobile Legends', 'Mulai Rp1.250', 'Promo', 'Terlaris', 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=600&q=80'],
-    ['Free Fire', 'Mulai Rp1.000', 'Diskon', 'Hot', 'https://images.unsplash.com/photo-1600861194942-f883de0dfe96?auto=format&fit=crop&w=600&q=80'],
-    ['PUBG Mobile', 'Mulai Rp5.000', 'Bonus', 'Terlaris', 'https://images.unsplash.com/photo-1560253023-3ec5d502959f?auto=format&fit=crop&w=600&q=80'],
-    ['Netflix Premium', 'Mulai Rp18.000', 'Legal', 'Baru', 'https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?auto=format&fit=crop&w=600&q=80'],
-];
 
 $flashSales = [
     ['86 Diamonds', 'Rp19.900', 'Rp22.500', 82],
@@ -126,23 +111,27 @@ $flashSales = [
                 </div>
                 <a href="#popular" class="text-link">Lihat semua</a>
             </div>
-            <div class="category-grid">
-                <?php foreach ($categoryCards as $category): ?>
-                    <?php
-                    $name = (string) $category['name'];
-                    $initials = strtoupper(substr(preg_replace('/[^A-Za-z0-9]/', '', $name), 0, 2));
-                    ?>
-                    <a
-                        href="<?= Url::to(['/site/products', 'slug' => $category['slug']]) ?>"
-                        class="category-card category-card-image"
-                        style="--category-image: url('<?= Html::encode($resolveCategoryImage($category['image'])) ?>')"
-                    >
-                        <span class="category-icon"><?= Html::encode($initials ?: 'LP') ?></span>
-                        <strong><?= Html::encode($name) ?></strong>
-                        <small>Produk tersedia</small>
-                    </a>
-                <?php endforeach ?>
-            </div>
+            <?php if ($categoryCards !== []): ?>
+                <div class="category-grid">
+                    <?php foreach ($categoryCards as $category): ?>
+                        <?php
+                        $name = (string) $category['name'];
+                        $initials = strtoupper(substr(preg_replace('/[^A-Za-z0-9]/', '', $name), 0, 2));
+                        ?>
+                        <a
+                            href="<?= Url::to(['/site/products', 'slug' => $category['slug']]) ?>"
+                            class="category-card category-card-image"
+                            style="--category-image: url('<?= Html::encode($resolveCategoryImage($category['image'])) ?>')"
+                        >
+                            <span class="category-icon"><?= Html::encode($initials ?: 'LP') ?></span>
+                            <strong><?= Html::encode($name) ?></strong>
+                            <small>Produk tersedia</small>
+                        </a>
+                    <?php endforeach ?>
+                </div>
+            <?php else: ?>
+                <div class="empty-state">Belum ada kategori aktif.</div>
+            <?php endif; ?>
         </div>
     </section>
 
@@ -150,26 +139,34 @@ $flashSales = [
         <div class="container-xl">
             <div class="section-head">
                 <div>
-                    <div class="section-kicker">Produk Populer</div>
+                    <div class="section-kicker">Kategori Populer</div>
                     <h2 class="section-title">Paling sering dibeli minggu ini</h2>
                 </div>
             </div>
-            <div class="product-grid">
-                <?php foreach ($popularProducts as $product): ?>
-                    <article class="product-card">
-                        <img src="<?= Html::encode($product[4]) ?>" alt="<?= Html::encode($product[0]) ?>" loading="lazy">
-                        <div class="product-body">
-                            <div class="badge-row">
-                                <span><?= Html::encode($product[2]) ?></span>
-                                <span><?= Html::encode($product[3]) ?></span>
+            <?php if ($popularCategories !== []): ?>
+                <div class="product-grid">
+                    <?php foreach ($popularCategories as $item): ?>
+                        <?php
+                        $category = $item['category'];
+                        $transactionCount = (int) $item['transactions'];
+                        ?>
+                        <article class="product-card">
+                            <img src="<?= Html::encode($resolveCategoryImage((string) $category->image)) ?>" alt="<?= Html::encode((string) $category->name) ?>" loading="lazy">
+                            <div class="product-body">
+                                <div class="badge-row">
+                                    <span>Kategori</span>
+                                    <span><?= Html::encode((string) $transactionCount) ?> transaksi</span>
+                                </div>
+                                <h3><?= Html::encode((string) $category->name) ?></h3>
+                                <p>Paling banyak dibeli dalam 7 hari terakhir.</p>
+                                <a href="<?= Url::to(['/site/products', 'slug' => (string) $category->slug]) ?>" class="lp-btn lp-btn-small">Topup</a>
                             </div>
-                            <h3><?= Html::encode($product[0]) ?></h3>
-                            <p><?= Html::encode($product[1]) ?></p>
-                            <a href="#popular" class="lp-btn lp-btn-small">Topup</a>
-                        </div>
-                    </article>
-                <?php endforeach ?>
-            </div>
+                        </article>
+                    <?php endforeach ?>
+                </div>
+            <?php else: ?>
+                <div class="empty-state">Belum ada transaksi kategori minggu ini.</div>
+            <?php endif; ?>
         </div>
     </section>
 

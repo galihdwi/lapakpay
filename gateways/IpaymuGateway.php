@@ -144,11 +144,12 @@ class IpaymuGateway extends Component implements PaymentGatewayInterface
     {
         return [
             'invoice_number' => $this->resolveInvoiceNumber($payload),
-            'status' => $this->normalizeStatus($payload['status'] ?? $payload['Status'] ?? $payload['transaction_status'] ?? ''),
+            'status' => $this->normalizeWebhookStatus($payload),
             'amount' => (float) ($payload['amount'] ?? $payload['Amount'] ?? $payload['total'] ?? 0),
             'gateway_reference' => (string) ($payload['trx_id'] ?? $payload['trxId'] ?? $payload['sid'] ?? $payload['SessionID'] ?? ''),
             'paid_at' => $payload['paid_at'] ?? $payload['paidAt'] ?? $payload['created_at'] ?? date('Y-m-d H:i:s'),
-            'payment_method' => $payload['payment_method'] ?? $payload['paymentMethod'] ?? null,
+            'payment_method' => $payload['payment_method'] ?? $payload['paymentMethod'] ?? $payload['via'] ?? $payload['channel'] ?? null,
+            'message' => $payload['system_notes'] ?? $payload['message'] ?? null,
         ];
     }
 
@@ -196,9 +197,29 @@ class IpaymuGateway extends Component implements PaymentGatewayInterface
             'pending', '0' => 'pending',
             'expired', 'expire' => 'expired',
             'cancel', 'cancelled', 'canceled' => 'cancelled',
-            'failed', 'fail', 'error', '2' => 'failed',
+            'gagal', 'failed', 'fail', 'error', '2' => 'failed',
             default => $status !== '' ? $status : 'pending',
         };
+    }
+
+    private function normalizeWebhookStatus(array $payload): string
+    {
+        foreach (['status', 'Status', 'transaction_status', 'settlement_status'] as $key) {
+            if (!empty($payload[$key])) {
+                $status = $this->normalizeStatus((string) $payload[$key]);
+                if ($status !== 'pending') {
+                    return $status;
+                }
+            }
+        }
+
+        foreach (['status_code', 'transaction_status_code'] as $key) {
+            if (array_key_exists($key, $payload)) {
+                return $this->normalizeStatus((string) $payload[$key]);
+            }
+        }
+
+        return 'pending';
     }
 
     private function resolveErrorMessage($data, string $content, int $statusCode): string

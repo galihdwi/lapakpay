@@ -22,28 +22,54 @@ class WebhookController extends Controller
 
     public function actionIpaymu()
     {
-        return $this->enqueuePaymentWebhook('ipaymu');
+        return $this->processPaymentWebhook('ipaymu');
     }
 
     public function actionFlip()
     {
-        return $this->enqueuePaymentWebhook('flip');
+        return $this->processPaymentWebhook('flip');
     }
 
-    private function enqueuePaymentWebhook(string $gatewayName): array
+    private function processPaymentWebhook(string $gatewayName): array
     {
         Yii::$app->response->format = Response::FORMAT_JSON;
-        $payload = Yii::$app->request->post();
+        $payload = $this->requestPayload();
         $headers = Yii::$app->request->headers->toArray();
 
         try {
-            $webhookId = $this->paymentWebhookService->enqueue($gatewayName, $payload, $headers);
+            $result = $this->paymentWebhookService->process($gatewayName, $payload, $headers);
 
-            return ['status' => 'queued', 'webhook_id' => $webhookId];
+            if (empty($result['processed'])) {
+                Yii::$app->response->statusCode = 422;
+            }
+
+            return $result;
         } catch (\Throwable $exception) {
             Yii::error($exception->getMessage(), __METHOD__);
+            Yii::$app->response->statusCode = 500;
 
             return ['status' => 'error', 'message' => $exception->getMessage()];
+        }
+    }
+
+    private function requestPayload(): array
+    {
+        $payload = Yii::$app->request->post();
+        if ($payload !== []) {
+            return $payload;
+        }
+
+        $rawBody = Yii::$app->request->rawBody;
+        if (trim($rawBody) === '') {
+            return [];
+        }
+
+        try {
+            $decoded = json_decode($rawBody, true, 512, JSON_THROW_ON_ERROR);
+            return is_array($decoded) ? $decoded : [];
+        } catch (\Throwable $exception) {
+            Yii::warning('Webhook body is not valid JSON: ' . $exception->getMessage(), __METHOD__);
+            return [];
         }
     }
 }

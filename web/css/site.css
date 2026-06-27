@@ -255,7 +255,8 @@ a {
     align-items: center;
     background:
         linear-gradient(90deg, rgba(15, 23, 42, .96) 0%, rgba(15, 23, 42, .72) 48%, rgba(15, 23, 42, .18) 100%),
-        var(--hero-image) center / cover;
+        var(--hero-image) center / cover no-repeat;
+    background-repeat: no-repeat;
     display: flex;
     min-height: 420px;
     padding: clamp(1.2rem, 5vw, 4rem);
@@ -298,6 +299,16 @@ a {
     grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.empty-state {
+    background: rgba(15, 23, 42, .5);
+    border: 1px dashed var(--lp-border);
+    border-radius: var(--lp-radius-md);
+    color: var(--lp-muted);
+    font-weight: 750;
+    padding: 1rem;
+    text-align: center;
+}
+
 .category-card,
 .product-card,
 .flash-panel,
@@ -327,7 +338,8 @@ a {
     align-items: flex-start;
     background:
         linear-gradient(180deg, rgba(15, 23, 42, .24), rgba(15, 23, 42, .86)),
-        var(--category-image) center / cover;
+        var(--category-image) center / cover no-repeat;
+    background-repeat: no-repeat;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -631,7 +643,8 @@ a {
 .game-detail-hero {
     background:
         linear-gradient(90deg, rgba(15, 23, 42, .98), rgba(15, 23, 42, .82), rgba(15, 23, 42, .54)),
-        var(--game-cover) center / cover;
+        var(--game-cover) center / cover no-repeat;
+    background-repeat: no-repeat;
     border-bottom: 1px solid var(--lp-border);
     margin-top: -1rem;
     padding: 2rem 0;
@@ -1807,7 +1820,8 @@ a {
     .hero-slide {
         background:
             linear-gradient(180deg, rgba(15, 23, 42, .96) 0%, rgba(15, 23, 42, .78) 100%),
-            var(--hero-image) center / cover;
+            var(--hero-image) center / cover no-repeat;
+        background-repeat: no-repeat;
     }
 
     .track-card {

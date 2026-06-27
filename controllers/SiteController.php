@@ -89,13 +89,76 @@ class SiteController extends Controller
      */
     public function actionIndex(): string
     {
+        $favoriteCategories = $this->productService->getFavoriteCategories(10);
+
         return $this->render('index', [
             'heroBanners' => Banner::find()
                 ->where(['status' => 'active'])
                 ->orderBy(['sort_order' => SORT_ASC, 'created_at' => SORT_DESC])
                 ->all(),
-            'favoriteCategories' => $this->productService->getFavoriteCategories(),
+            'favoriteCategories' => $favoriteCategories,
+            'popularCategories' => $this->popularCategoriesThisWeek(),
         ]);
+    }
+
+    private function popularCategoriesThisWeek(int $limit = 4): array
+    {
+        $activeCategories = $this->productService->getFavoriteCategories(100);
+        if ($activeCategories === []) {
+            return [];
+        }
+
+        $categoryMap = [];
+        foreach ($activeCategories as $category) {
+            foreach ([(string) $category->name, (string) $category->slug] as $key) {
+                $normalizedKey = $this->normalizeCategoryKey($key);
+                if ($normalizedKey !== '') {
+                    $categoryMap[$normalizedKey] = $category;
+                }
+            }
+        }
+
+        $counts = [];
+        $since = date('Y-m-d H:i:s', strtotime('-7 days'));
+
+        foreach ($this->transactionRepository->purchasedSince($since) as $transaction) {
+            $product = $this->productRepository->findById((string) $transaction->product_id);
+            if ($product === null) {
+                continue;
+            }
+
+            $category = null;
+            foreach ([(string) $product->brand, (string) $product->category] as $candidate) {
+                $category = $categoryMap[$this->normalizeCategoryKey($candidate)] ?? null;
+                if ($category !== null) {
+                    break;
+                }
+            }
+
+            if ($category === null) {
+                continue;
+            }
+
+            $categoryId = (string) $category->_id;
+            if (!isset($counts[$categoryId])) {
+                $counts[$categoryId] = [
+                    'category' => $category,
+                    'transactions' => 0,
+                ];
+            }
+
+            $counts[$categoryId]['transactions']++;
+        }
+
+        usort($counts, static fn (array $left, array $right): int => $right['transactions'] <=> $left['transactions']);
+
+        return array_slice($counts, 0, $limit);
+    }
+
+    private function normalizeCategoryKey(string $value): string
+    {
+        $value = strtolower(trim($value));
+        return preg_replace('/[^a-z0-9]+/', '', $value) ?? '';
     }
 
     public function actionTrackOrder(?string $invoice = null): string

@@ -9,9 +9,6 @@ use Yii;
 
 class ProductService
 {
-    private const PRODUCT_LIST_TTL = 900;
-    private const CATEGORY_LIST_TTL = 3600;
-
     public function __construct(
         private readonly ProductRepository $productRepository,
         private readonly CategoryRepository $categoryRepository,
@@ -48,13 +45,7 @@ class ProductService
 
     public function getFavoriteCategories(int $limit = 10): array
     {
-        $cacheKey = ['catalog.favoriteCategories', $limit];
-
-        return Yii::$app->cache->getOrSet(
-            $cacheKey,
-            fn (): array => $this->categoryRepository->findFavoriteActive($limit),
-            self::CATEGORY_LIST_TTL,
-        );
+        return $this->categoryRepository->findFavoriteActive($limit);
     }
 
     public function getProductsByBrand(string $brand): array

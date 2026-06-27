@@ -31,11 +31,13 @@ class IpaymuGateway extends Component implements PaymentGatewayInterface
         if (trim($this->va) === '' && $va !== '') {
             $this->va = $va;
         }
+        $this->va = trim($this->va);
 
         $apiKey = $this->env('IPAYMU_API_KEY');
         if (trim($this->apiKey) === '' && $apiKey !== '') {
             $this->apiKey = $apiKey;
         }
+        $this->apiKey = trim($this->apiKey);
 
         $publicBaseUrl = $this->env('APP_BASE_URL');
         if (trim($this->publicBaseUrl) === '' && $publicBaseUrl !== '') {
@@ -66,18 +68,17 @@ class IpaymuGateway extends Component implements PaymentGatewayInterface
             ];
         }
 
-        $payload = [
-            'product' => ['Invoice ' . $invoiceNumber],
+        $payload = $this->sanitizePayload([
+            'product' => [$this->cleanPaymentText('Invoice ' . $invoiceNumber)],
             'qty' => ['1'],
             'price' => [(string) (int) round($amount)],
-            'description' => ['Pembayaran transaksi ' . $invoiceNumber],
+            'description' => [$this->cleanPaymentText('Pembayaran transaksi ' . $invoiceNumber)],
             'returnUrl' => $returnUrl,
             'cancelUrl' => $cancelUrl,
             'notifyUrl' => $notifyUrl,
             'referenceId' => $invoiceNumber,
-            'buyerName' => '',
             'buyerEmail' => $customerDetails['email'] ?? '',
-        ];
+        ]);
 
         try {
             $body = $this->jsonEncode($payload);
@@ -157,13 +158,15 @@ class IpaymuGateway extends Component implements PaymentGatewayInterface
     {
         $timestamp = date('YmdHis');
         $bodyHash = strtolower(hash('sha256', $body));
-        $stringToSign = strtoupper($method) . ':' . $this->va . ':' . $bodyHash . ':' . $this->apiKey;
+        $va = trim($this->va);
+        $apiKey = trim($this->apiKey);
+        $stringToSign = strtoupper($method) . ':' . $va . ':' . $bodyHash . ':' . $apiKey;
 
         return [
             'Content-Type' => 'application/json',
             'Accept' => 'application/json',
-            'va' => $this->va,
-            'signature' => hash_hmac('sha256', $stringToSign, $this->apiKey),
+            'va' => $va,
+            'signature' => hash_hmac('sha256', $stringToSign, $apiKey),
             'timestamp' => $timestamp,
         ];
     }
@@ -268,8 +271,44 @@ class IpaymuGateway extends Component implements PaymentGatewayInterface
         return json_encode($payload, JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
     }
 
+    private function sanitizePayload(array $payload): array
+    {
+        $clean = [];
+
+        foreach ($payload as $key => $value) {
+            if ($value === null) {
+                continue;
+            }
+
+            if (is_array($value)) {
+                $value = $this->sanitizePayload($value);
+                if ($value === []) {
+                    continue;
+                }
+            } elseif (is_string($value)) {
+                $value = trim($value);
+                if ($value === '') {
+                    continue;
+                }
+            }
+
+            $clean[$key] = $value;
+        }
+
+        return $clean;
+    }
+
+    private function cleanPaymentText(string $value): string
+    {
+        return str_replace(['`', '‘', '’', '“', '”'], ["'", "'", "'", '"', '"'], $value);
+    }
+
     private function env(string $name): string
     {
+        if (function_exists('app_env')) {
+            return app_env($name);
+        }
+
         foreach ([getenv($name), $_ENV[$name] ?? null, $_SERVER[$name] ?? null] as $value) {
             if ($value !== false && $value !== null && trim((string) $value) !== '') {
                 return trim((string) $value);

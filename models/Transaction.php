@@ -11,6 +11,7 @@ use yii\mongodb\ActiveRecord;
  * @property string $invoice_number
  * @property string $trxid_provider
  * @property string $user_id
+ * @property string $email
  * @property string $product_id
  * @property string $target
  * @property string $zone
@@ -39,6 +40,7 @@ class Transaction extends ActiveRecord
             'invoice_number',
             'trxid_provider',
             'user_id',
+            'email',
             'product_id',
             'target',
             'zone',
@@ -64,6 +66,7 @@ class Transaction extends ActiveRecord
                 'invoice_number',
                 'trxid_provider',
                 'user_id',
+                'email',
                 'product_id',
                 'target',
                 'zone',

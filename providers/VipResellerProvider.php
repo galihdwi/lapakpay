@@ -46,14 +46,19 @@ class VipResellerProvider extends Component implements ProviderInterface
         ]);
     }
 
-    public function getNickname(string $game, string $target, ?string $zone = null): ?array
+    public function getNickname(string $code, string $target, ?string $additionalTarget = null): array
     {
-        return $this->sendRequest('game-feature', [
+        $data = [
             'type' => 'get-nickname',
-            'game' => $game,
+            'code' => $code,
             'target' => $target,
-            'zone' => $zone,
-        ]);
+        ];
+
+        if ($additionalTarget !== null && $additionalTarget !== '') {
+            $data['additional_target'] = $additionalTarget;
+        }
+
+        return $this->sendRequest('game-feature', $data);
     }
 
     public function getStock(): float

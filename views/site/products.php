@@ -5,6 +5,8 @@
 /** @var string $selectedBrand */
 /** @var app\models\Product[] $products */
 /** @var array $groupedProducts */
+/** @var array $productNicknameConfigs */
+/** @var array|null $nicknameConfig */
 
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -41,6 +43,9 @@ foreach ($products as $product) {
         $initialPrice = $price;
     }
 }
+$initialNicknameConfig = $initialProduct !== null
+    ? ($productNicknameConfigs[(string) $initialProduct->_id] ?? $nicknameConfig)
+    : $nicknameConfig;
 
 ?>
 
@@ -88,19 +93,23 @@ foreach ($products as $product) {
                 class="game-checkout-flow"
                 data-checkout
                 data-create-order-url="<?= Html::encode(Url::to(['/site/create-order'])) ?>"
+                data-check-nickname-url="<?= Html::encode(Url::to(['/site/check-game-nickname'])) ?>"
+                data-nickname-required="<?= $initialNicknameConfig !== null ? '1' : '0' ?>"
+                data-requires-zone="<?= ($initialNicknameConfig['requiresZone'] ?? false) ? '1' : '0' ?>"
             >
                 <div class="checkout-step product-detail-step">
                     <div class="step-label">1</div>
                     <h2>Masukkan Data Akun</h2>
-                    <p class="lp-muted">Pastikan User ID dan Zone ID sesuai dengan akun tujuan.</p>
+                    <p class="lp-muted">Pastikan data akun sesuai dengan akun tujuan.</p>
                     <div class="row g-2">
-                        <div class="col-md-7">
+                        <div class="<?= ($initialNicknameConfig['requiresZone'] ?? true) ? 'col-md-7' : 'col-12' ?>" data-target-field>
                             <input class="form-control lp-input" placeholder="User ID" data-order-target>
                         </div>
-                        <div class="col-md-5">
-                            <input class="form-control lp-input" placeholder="Zone ID / Server" data-order-zone>
+                        <div class="col-md-5 <?= ($initialNicknameConfig !== null && !($initialNicknameConfig['requiresZone'] ?? false)) ? 'd-none' : '' ?>" data-zone-field>
+                            <input class="form-control lp-input" placeholder="<?= Html::encode((string) ($initialNicknameConfig['zonePlaceholder'] ?? 'Zone ID / Server')) ?>" data-order-zone>
                         </div>
                     </div>
+                    <div class="nickname-result d-none" data-nickname-result></div>
                 </div>
 
                 <div class="checkout-step product-detail-step">
@@ -119,6 +128,7 @@ foreach ($products as $product) {
                                         $price = !Yii::$app->user->isGuest && Yii::$app->user->identity->role === 'reseller'
                                             ? (float) $product->reseller_price
                                             : (float) $product->user_price;
+                                        $productNicknameConfig = $productNicknameConfigs[(string) $product->_id] ?? null;
                                         ?>
                                         <button
                                             type="button"
@@ -126,11 +136,12 @@ foreach ($products as $product) {
                                             data-select-card="nominal"
                                             data-product-id="<?= Html::encode((string) $product->_id) ?>"
                                             data-product-name="<?= Html::encode((string) $product->product_name) ?>"
-                                            data-product-code="<?= Html::encode((string) $product->provider_code) ?>"
                                             data-product-price="<?= Html::encode((string) (int) round($price)) ?>"
+                                            data-nickname-required="<?= $productNicknameConfig !== null ? '1' : '0' ?>"
+                                            data-requires-zone="<?= ($productNicknameConfig['requiresZone'] ?? false) ? '1' : '0' ?>"
+                                            data-zone-placeholder="<?= Html::encode((string) ($productNicknameConfig['zonePlaceholder'] ?? 'Zone ID / Server')) ?>"
                                         >
                                             <span><?= Html::encode($product->product_name) ?></span>
-                                            <small><?= Html::encode($product->provider_code) ?></small>
                                             <strong>Rp<?= Html::encode(number_format($price, 0, ',', '.')) ?></strong>
                                         </button>
                                         <?php $firstProductRendered = true; ?>

@@ -4,6 +4,7 @@
 /** @var app\models\Banner[] $heroBanners */
 /** @var app\models\Category[] $favoriteCategories */
 /** @var array[] $popularCategories */
+/** @var array{transactions:int,users:int,products:int} $stats */
 
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -212,9 +213,9 @@ $flashSales = [
     <section class="content-section">
         <div class="container-xl">
             <div class="stats-grid">
-                <div><strong data-count="128430">0</strong><span>Total Transaksi</span></div>
-                <div><strong data-count="38420">0</strong><span>Total User</span></div>
-                <div><strong data-count="842">0</strong><span>Total Produk</span></div>
+                <div><strong data-count="<?= Html::encode((string) ($stats['transactions'] ?? 0)) ?>">0</strong><span>Total Transaksi</span></div>
+                <div><strong data-count="<?= Html::encode((string) ($stats['users'] ?? 0)) ?>">0</strong><span>Total User</span></div>
+                <div><strong data-count="<?= Html::encode((string) ($stats['products'] ?? 0)) ?>">0</strong><span>Total Produk</span></div>
                 <div><strong data-count="99" data-suffix="%">0%</strong><span>Success Rate</span></div>
             </div>
         </div>

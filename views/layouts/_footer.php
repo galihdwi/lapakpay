@@ -16,6 +16,7 @@ use yii\helpers\Html;
                     <strong class="text-white">AksesPay</strong>
                 </div>
                 <p class="lp-muted mb-3">Topup game, PPOB, dan streaming premium dengan proses otomatis, pembayaran aman, dan dukungan reseller.</p>
+                <p class="lp-footer-address mb-3">Jl. Gadang VI No 6 Kec. Sukun Kel Gadang Malang, Jawa Timur 65149</p>
                 <div class="lp-social-row">
                     <a href="#" class="lp-social" aria-label="Instagram"><i class="bi bi-instagram" aria-hidden="true"></i></a>
                     <a href="#" class="lp-social" aria-label="TikTok"><i class="bi bi-music-note-beamed" aria-hidden="true"></i></a>
@@ -43,15 +44,15 @@ use yii\helpers\Html;
                         <span><?= Html::encode($method) ?></span>
                     <?php endforeach ?>
                 </div>
-                <div class="lp-legal-links">
-                    <?= Html::a('Syarat & Ketentuan', ['/site/syarat-ketentuan']) ?>
-                    <?= Html::a('Kebijakan Privasi', ['/site/kebijakan-privasi']) ?>
-                </div>
             </div>
         </div>
         <div class="lp-footer-bottom">
             <span>&copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?></span>
-            <span>Murah • Aman • Cepat</span>
+            <div class="lp-legal-links">
+                <?= Html::a('Syarat & Ketentuan', ['/site/syarat-ketentuan']) ?>
+                <?= Html::a('Kebijakan Pengembalian Dana (Refund Policy)', ['/site/kebijakan-pengembalian-dana']) ?>
+                <?= Html::a('FAQ', ['/site/faq']) ?>
+            </div>
         </div>
     </div>
 </footer>

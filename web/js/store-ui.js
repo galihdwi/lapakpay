@@ -37,17 +37,36 @@ document.addEventListener('DOMContentLoaded', () => {
                 sibling.classList.remove('is-active');
             });
             card.classList.add('is-active');
+            applySelectedProductNicknameConfig(scope);
             updateCheckoutSummary(scope);
+            resetNicknameValidation(scope);
+            scheduleNicknameValidation(scope);
         });
     });
 
     document.querySelectorAll('[data-checkout]').forEach((checkout) => {
+        applySelectedProductNicknameConfig(checkout);
         updateCheckoutSummary(checkout);
+        checkout.dataset.nicknameValid = checkout.dataset.nicknameRequired === '1' ? '0' : '1';
 
         const buyButton = checkout.closest('.game-detail-layout')?.querySelector('[data-buy-now]');
         if (!buyButton) {
             return;
         }
+
+        const accountInputs = [
+            checkout.querySelector('[data-order-target]'),
+            checkout.querySelector('[data-order-zone]'),
+        ].filter(Boolean);
+
+        accountInputs.forEach((input) => {
+            input.addEventListener('input', () => {
+                resetNicknameValidation(checkout);
+                scheduleNicknameValidation(checkout);
+            });
+        });
+
+        updateBuyButtonState(checkout);
 
         buyButton.addEventListener('click', async () => {
             const selectedProduct = checkout.querySelector('[data-select-card="nominal"].is-active');
@@ -67,6 +86,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 showCheckoutMessage(message, 'User ID wajib diisi.', true);
                 targetInput?.focus();
                 return;
+            }
+
+            if (checkout.dataset.requiresZone === '1' && !zoneInput?.value.trim()) {
+                showCheckoutMessage(message, 'Zone ID wajib diisi.', true);
+                zoneInput?.focus();
+                return;
+            }
+
+            if (checkout.dataset.nicknameRequired === '1' && checkout.dataset.nicknameValid !== '1') {
+                await validateGameNickname(checkout);
+                if (checkout.dataset.nicknameValid !== '1') {
+                    showCheckoutMessage(message, checkout.dataset.nicknameMessage || 'Validasi akun game belum berhasil.', true);
+                    return;
+                }
             }
 
             if (!emailInput?.value.trim()) {
@@ -109,10 +142,12 @@ document.addEventListener('DOMContentLoaded', () => {
             } catch (error) {
                 showCheckoutMessage(message, 'Gagal menghubungi server. Coba lagi.', true);
             } finally {
-                buyButton.disabled = false;
                 buyButton.textContent = 'Beli Sekarang';
+                updateBuyButtonState(checkout);
             }
         });
+
+        updateBuyButtonState(checkout);
     });
 
     const nicknameButton = document.querySelector('[data-check-nickname]');
@@ -128,6 +163,32 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+function applySelectedProductNicknameConfig(checkout) {
+    const selectedProduct = checkout.querySelector('[data-select-card="nominal"].is-active');
+    if (!selectedProduct) {
+        return;
+    }
+
+    checkout.dataset.nicknameRequired = selectedProduct.dataset.nicknameRequired || '0';
+    checkout.dataset.requiresZone = selectedProduct.dataset.requiresZone || '0';
+
+    const targetField = checkout.querySelector('[data-target-field]');
+    const zoneField = checkout.querySelector('[data-zone-field]');
+    const zoneInput = checkout.querySelector('[data-order-zone]');
+    const requiresZone = checkout.dataset.requiresZone === '1';
+
+    targetField?.classList.toggle('col-md-7', requiresZone);
+    targetField?.classList.toggle('col-12', !requiresZone);
+    zoneField?.classList.toggle('d-none', !requiresZone);
+
+    if (zoneInput) {
+        zoneInput.placeholder = selectedProduct.dataset.zonePlaceholder || 'Zone ID / Server';
+        if (!requiresZone) {
+            zoneInput.value = '';
+        }
+    }
+}
 
 function updateCheckoutSummary(checkout) {
     const layout = checkout.closest('.game-detail-layout');
@@ -147,6 +208,142 @@ function updateCheckoutSummary(checkout) {
         const price = parseMoneyValue(selectedProduct?.dataset.productPrice || '0');
         total.textContent = formatRupiah(price);
     }
+}
+
+function scheduleNicknameValidation(checkout) {
+    if (!checkout || checkout.dataset.nicknameRequired !== '1') {
+        updateBuyButtonState(checkout);
+        return;
+    }
+
+    clearTimeout(checkout.nicknameTimer);
+    checkout.nicknameTimer = setTimeout(() => {
+        validateGameNickname(checkout);
+    }, 550);
+    updateBuyButtonState(checkout);
+}
+
+async function validateGameNickname(checkout) {
+    const selectedProduct = checkout.querySelector('[data-select-card="nominal"].is-active');
+    const targetInput = checkout.querySelector('[data-order-target]');
+    const zoneInput = checkout.querySelector('[data-order-zone]');
+    const result = checkout.querySelector('[data-nickname-result]');
+    const target = targetInput?.value.trim() || '';
+    const zone = zoneInput?.value.trim() || '';
+
+    if (!selectedProduct || !target || (checkout.dataset.requiresZone === '1' && !zone)) {
+        checkout.dataset.nicknameValid = '0';
+        checkout.dataset.nicknameMessage = checkout.dataset.requiresZone === '1'
+            ? 'Isi User ID dan Zone ID untuk mengecek akun.'
+            : 'Isi User ID untuk mengecek akun.';
+        if (target || zone) {
+            showNicknameResult(result, checkout.dataset.nicknameMessage, true, false);
+        } else {
+            hideCheckoutMessage(result);
+        }
+        updateBuyButtonState(checkout);
+        return;
+    }
+
+    const requestId = String(Date.now());
+    checkout.dataset.nicknameRequestId = requestId;
+    checkout.dataset.nicknameValid = '0';
+    checkout.dataset.nicknameMessage = 'Mengecek akun game...';
+    showNicknameResult(result, 'Mengecek akun game...', false, true);
+    updateBuyButtonState(checkout);
+
+    const payload = new FormData();
+    payload.append('product_id', selectedProduct.dataset.productId || '');
+    payload.append('target', target);
+    payload.append('zone', zone);
+
+    if (window.yii?.getCsrfParam && window.yii?.getCsrfToken) {
+        payload.append(window.yii.getCsrfParam(), window.yii.getCsrfToken());
+    }
+
+    try {
+        const response = await fetch(checkout.dataset.checkNicknameUrl, {
+            method: 'POST',
+            body: payload,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+        });
+        const data = await response.json();
+
+        if (checkout.dataset.nicknameRequestId !== requestId) {
+            return;
+        }
+
+        if (!response.ok || data.status !== 'success') {
+            checkout.dataset.nicknameValid = '0';
+            checkout.dataset.nicknameMessage = data.message || 'Akun game tidak ditemukan.';
+            showNicknameResult(result, checkout.dataset.nicknameMessage, true, false);
+            updateBuyButtonState(checkout);
+            return;
+        }
+
+        checkout.dataset.nicknameValid = '1';
+        checkout.dataset.nicknameMessage = data.message || 'Akun game berhasil divalidasi.';
+        showNicknameResult(result, checkout.dataset.nicknameMessage, false, false);
+        updateBuyButtonState(checkout);
+    } catch (error) {
+        if (checkout.dataset.nicknameRequestId !== requestId) {
+            return;
+        }
+
+        checkout.dataset.nicknameValid = '0';
+        checkout.dataset.nicknameMessage = 'Gagal mengecek nickname. Coba lagi.';
+        showNicknameResult(result, checkout.dataset.nicknameMessage, true, false);
+        updateBuyButtonState(checkout);
+    }
+}
+
+function resetNicknameValidation(checkout) {
+    if (!checkout) {
+        return;
+    }
+
+    const result = checkout.querySelector('[data-nickname-result]');
+    hideCheckoutMessage(result);
+    result?.classList.remove('is-loading');
+
+    if (checkout.dataset.nicknameRequired !== '1') {
+        checkout.dataset.nicknameValid = '1';
+        checkout.dataset.nicknameMessage = '';
+        checkout.dataset.nicknameRequestId = '';
+        updateBuyButtonState(checkout);
+        return;
+    }
+
+    checkout.dataset.nicknameValid = '0';
+    checkout.dataset.nicknameMessage = '';
+    checkout.dataset.nicknameRequestId = '';
+    updateBuyButtonState(checkout);
+}
+
+function updateBuyButtonState(checkout) {
+    if (!checkout) {
+        return;
+    }
+
+    const buyButton = checkout.closest('.game-detail-layout')?.querySelector('[data-buy-now]');
+    if (!buyButton) {
+        return;
+    }
+
+    const target = checkout.querySelector('[data-order-target]')?.value.trim() || '';
+    const zone = checkout.querySelector('[data-order-zone]')?.value.trim() || '';
+    const needsNickname = checkout.dataset.nicknameRequired === '1';
+    const needsZone = checkout.dataset.requiresZone === '1';
+    const accountComplete = target !== '' && (!needsZone || zone !== '');
+
+    buyButton.disabled = needsNickname && accountComplete && checkout.dataset.nicknameValid !== '1';
+}
+
+function showNicknameResult(element, text, isError, isLoading) {
+    showCheckoutMessage(element, text, isError);
+    element?.classList.toggle('is-loading', isLoading);
 }
 
 function formatRupiah(value) {

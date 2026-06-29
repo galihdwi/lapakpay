@@ -43,7 +43,7 @@ $labelOptions = ['class' => 'form-label'];
                     <div class="contact-info-list">
                         <div>
                             <span>Email</span>
-                            <strong><?= Html::encode(Yii::$app->params['adminEmail'] ?? 'support@aksespay.id') ?></strong>
+                            <strong><?= Html::encode(Yii::$app->params['adminEmail'] ?? 'support@aksespay.com') ?></strong>
                         </div>
                         <div>
                             <span>Track Order</span>
@@ -66,59 +66,59 @@ $labelOptions = ['class' => 'form-label'];
                     </div>
 
                     <?php $form = ActiveForm::begin(['id' => 'contact-form', 'options' => ['class' => 'contact-form']]); ?>
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <?= $form->field($model, 'name', [
-                                    'template' => sprintf($htmlIcon, 'bi-person'),
-                                    'inputOptions' => [
-                                        'class' => 'form-control lp-input',
-                                        'placeholder' => 'Nama lengkap',
-                                        'autofocus' => true,
-                                    ],
-                                ])->label('Nama', $labelOptions) ?>
-                            </div>
-
-                            <div class="col-md-6">
-                                <?= $form->field($model, 'email', [
-                                    'template' => sprintf($htmlIcon, 'bi-envelope'),
-                                    'inputOptions' => [
-                                        'class' => 'form-control lp-input',
-                                        'placeholder' => 'email@example.com',
-                                        'autocomplete' => 'email',
-                                    ],
-                                ])->label('Email', $labelOptions) ?>
-                            </div>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <?= $form->field($model, 'name', [
+                                'template' => sprintf($htmlIcon, 'bi-person'),
+                                'inputOptions' => [
+                                    'class' => 'form-control lp-input',
+                                    'placeholder' => 'Nama lengkap',
+                                    'autofocus' => true,
+                                ],
+                            ])->label('Nama', $labelOptions) ?>
                         </div>
 
-                        <?= $form->field($model, 'subject', [
-                            'template' => sprintf($htmlIcon, 'bi-chat-left-text'),
-                            'inputOptions' => [
-                                'class' => 'form-control lp-input',
-                                'placeholder' => 'Contoh: Pembayaran belum masuk',
-                            ],
-                        ])->label('Subjek', $labelOptions) ?>
-
-                        <?= $form->field($model, 'body', [
-                            'template' => '{label}{input}{error}{hint}',
-                            'inputOptions' => [
-                                'class' => 'form-control lp-input contact-message',
-                                'placeholder' => 'Tulis pesan dan nomor invoice jika ada.',
-                            ],
-                        ])->textarea(['rows' => 6])->label('Pesan', $labelOptions) ?>
-
-                        <div class="contact-captcha-row">
-                            <?= $form->field($model, 'verifyCode', [
-                                'enableLabel' => false,
-                                'inputOptions' => ['class' => 'form-control lp-input', 'placeholder' => 'Kode verifikasi'],
-                            ])->widget(Captcha::class, [
-                                'template' => '<div class="contact-captcha">{image}{input}</div>',
-                            ]) ?>
-
-                            <?= Html::submitButton('Kirim Pesan', [
-                                'class' => 'lp-btn lp-btn-primary contact-submit',
-                                'name' => 'contact-button',
-                            ]) ?>
+                        <div class="col-md-6">
+                            <?= $form->field($model, 'email', [
+                                'template' => sprintf($htmlIcon, 'bi-envelope'),
+                                'inputOptions' => [
+                                    'class' => 'form-control lp-input',
+                                    'placeholder' => 'email@example.com',
+                                    'autocomplete' => 'email',
+                                ],
+                            ])->label('Email', $labelOptions) ?>
                         </div>
+                    </div>
+
+                    <?= $form->field($model, 'subject', [
+                        'template' => sprintf($htmlIcon, 'bi-chat-left-text'),
+                        'inputOptions' => [
+                            'class' => 'form-control lp-input',
+                            'placeholder' => 'Contoh: Pembayaran belum masuk',
+                        ],
+                    ])->label('Subjek', $labelOptions) ?>
+
+                    <?= $form->field($model, 'body', [
+                        'template' => '{label}{input}{error}{hint}',
+                        'inputOptions' => [
+                            'class' => 'form-control lp-input contact-message',
+                            'placeholder' => 'Tulis pesan dan nomor invoice jika ada.',
+                        ],
+                    ])->textarea(['rows' => 6])->label('Pesan', $labelOptions) ?>
+
+                    <div class="contact-captcha-row">
+                        <?= $form->field($model, 'verifyCode', [
+                            'enableLabel' => false,
+                            'inputOptions' => ['class' => 'form-control lp-input', 'placeholder' => 'Kode verifikasi'],
+                        ])->widget(Captcha::class, [
+                            'template' => '<div class="contact-captcha">{image}{input}</div>',
+                        ]) ?>
+
+                        <?= Html::submitButton('Kirim Pesan', [
+                            'class' => 'lp-btn lp-btn-primary contact-submit',
+                            'name' => 'contact-button',
+                        ]) ?>
+                    </div>
                     <?php ActiveForm::end(); ?>
                 </div>
             </div>

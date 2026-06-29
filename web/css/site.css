@@ -1520,6 +1520,13 @@ a {
     margin-bottom: .8rem;
 }
 
+.lp-footer-address {
+    color: var(--lp-muted);
+    line-height: 1.7;
+    margin-bottom: 0;
+    max-width: 340px;
+}
+
 .payment-grid span {
     align-items: center;
     background: rgba(30, 41, 59, .82);
@@ -1573,12 +1580,9 @@ a {
 }
 
 .lp-legal-links {
-    border-top: 1px solid var(--lp-border);
     display: flex;
     flex-wrap: wrap;
     gap: .8rem;
-    margin-top: 1rem;
-    padding-top: .85rem;
 }
 
 .lp-legal-links a {
@@ -1592,6 +1596,7 @@ a {
     flex-wrap: wrap;
     gap: .75rem;
     justify-content: space-between;
+    align-items: center;
     margin-top: 1.5rem;
     padding-top: 1rem;
 }

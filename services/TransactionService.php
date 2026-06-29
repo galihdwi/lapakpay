@@ -5,6 +5,7 @@ namespace app\services;
 use app\jobs\SupplierOrderJob;
 use app\models\Product;
 use app\models\Transaction;
+use app\repositories\ProductRepository;
 use app\repositories\TransactionRepository;
 use app\repositories\PaymentRepository;
 use Yii;
@@ -16,6 +17,7 @@ class TransactionService extends Component
     public function __construct(
         private readonly TransactionRepository $transactionRepository,
         private readonly PaymentRepository $paymentRepository,
+        private readonly ProductRepository $productRepository,
         $config = [],
     ) {
         parent::__construct($config);
@@ -31,12 +33,14 @@ class TransactionService extends Component
         string $target,
         ?string $zone,
         string $paymentMethod,
+        ?string $email = null,
         ?string $userId = null,
         ?string $nickname = null,
     ): Transaction {
         $transaction = new Transaction([
             'invoice_number' => $this->createInvoiceNumber(),
             'user_id' => $userId,
+            'email' => $email,
             'product_id' => (string) $product->_id,
             'target' => $target,
             'zone' => $zone,
@@ -110,6 +114,7 @@ class TransactionService extends Component
 
         $payment = $payment ?: $this->paymentRepository->getOrCreateByInvoiceNumber((string) $transaction->invoice_number);
         $paymentStatus = (string) ($data['status'] ?? 'pending');
+        $previousTransactionStatus = (string) $transaction->status;
         $payment->setAttributes([
             'invoice_number' => $transaction->invoice_number,
             'amount' => (float) ($data['amount'] ?? $transaction->sell_price),
@@ -124,6 +129,7 @@ class TransactionService extends Component
             $transaction->status = 'processing';
             $transaction->payment_gateway = $gatewayName;
             $this->transactionRepository->save($transaction, false, ['status', 'payment_gateway']);
+            $this->sendPaymentStatusNotification($transaction, $paymentStatus, $previousTransactionStatus);
 
             Yii::$app->get('queue')->push(new SupplierOrderJob([
                 'transaction_id' => (string) $transaction->_id,
@@ -133,9 +139,30 @@ class TransactionService extends Component
             $transaction->payment_gateway = $gatewayName;
             $transaction->notes = $data['message'] ?? $transaction->notes;
             $this->transactionRepository->save($transaction, false, ['status', 'payment_gateway', 'notes']);
+            $this->sendPaymentStatusNotification($transaction, $paymentStatus, $previousTransactionStatus);
         }
 
         return true;
+    }
+
+    private function sendPaymentStatusNotification(
+        Transaction $transaction,
+        string $paymentStatus,
+        string $previousTransactionStatus,
+    ): void {
+        $email = trim((string) $transaction->email);
+        if ($email === '' || $previousTransactionStatus !== 'pending' || !Yii::$app->has('resendEmail')) {
+            return;
+        }
+
+        $product = $this->productRepository->findById((string) $transaction->product_id);
+
+        Yii::$app->resendEmail->sendPaymentStatusNotification(
+            $email,
+            $transaction,
+            $product,
+            $paymentStatus,
+        );
     }
 
     private function defaultGatewayName(): string

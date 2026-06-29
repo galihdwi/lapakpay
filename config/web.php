@@ -68,6 +68,12 @@ $config = [
             'validationToken' => app_env('FLIP_VALIDATION_TOKEN'),
             'publicBaseUrl' => app_env('APP_BASE_URL'),
         ],
+        'resendEmail' => [
+            'class' => \app\services\ResendEmailService::class,
+            'apiKey' => $params['resend']['apiKey'],
+            'fromEmail' => $params['resend']['fromEmail'],
+            'fromName' => $params['resend']['fromName'],
+        ],
         'user' => [
             'identityClass' => \app\models\User::class,
             'enableAutoLogin' => true,
@@ -98,6 +104,8 @@ $config = [
                 'cara-topup' => 'site/cara-topup',
                 'syarat-ketentuan' => 'site/syarat-ketentuan',
                 'kebijakan-privasi' => 'site/kebijakan-privasi',
+                'kebijakan-pengembalian-dana' => 'site/kebijakan-pengembalian-dana',
+                'faq' => 'site/faq',
                 'track-order' => 'site/track-order',
                 'games/<slug:[\w-]+>' => 'site/products',
             ],

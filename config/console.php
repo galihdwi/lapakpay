@@ -56,6 +56,12 @@ $config = [
             'validationToken' => app_env('FLIP_VALIDATION_TOKEN'),
             'publicBaseUrl' => app_env('APP_BASE_URL'),
         ],
+        'resendEmail' => [
+            'class' => \app\services\ResendEmailService::class,
+            'apiKey' => $params['resend']['apiKey'],
+            'fromEmail' => $params['resend']['fromEmail'],
+            'fromName' => $params['resend']['fromName'],
+        ],
         'log' => [
             'targets' => [
                 [

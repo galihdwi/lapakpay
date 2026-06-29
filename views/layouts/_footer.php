@@ -20,6 +20,7 @@ use yii\helpers\Url;
                 </div>
                 <p class="lp-muted mb-3">Topup game, PPOB, dan streaming premium dengan proses otomatis, pembayaran aman, dan dukungan reseller.</p>
                 <p class="lp-footer-address mb-3">Jl. Gadang VI No 6 Kec. Sukun Kel Gadang Malang, Jawa Timur 65149</p>
+                <p class="lp-footer-address mb-3">WA: +62 881 080 500 015</p>
                 <div class="lp-social-row">
                     <a href="#" class="lp-social" aria-label="Instagram"><i class="bi bi-instagram" aria-hidden="true"></i></a>
                     <a href="#" class="lp-social" aria-label="TikTok"><i class="bi bi-music-note-beamed" aria-hidden="true"></i></a>

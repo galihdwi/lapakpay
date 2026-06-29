@@ -46,6 +46,10 @@ $labelOptions = ['class' => 'form-label'];
                             <strong><?= Html::encode(Yii::$app->params['adminEmail'] ?? 'support@aksespay.com') ?></strong>
                         </div>
                         <div>
+                            <span>Whatsapp</span>
+                            <strong><?= Html::encode(Yii::$app->params['adminWhatsapp'] ?? '+62 881 080 500 015') ?></strong>
+                        </div>
+                        <div>
                             <span>Track Order</span>
                             <?= Html::a('Cek nomor invoice', ['/site/track-order']) ?>
                         </div>

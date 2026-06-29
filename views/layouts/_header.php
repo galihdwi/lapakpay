@@ -7,6 +7,7 @@ declare(strict_types=1);
 use yii\bootstrap5\Nav;
 use app\components\NavBar;
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 $items = [
     [
@@ -49,8 +50,12 @@ $items = [
 <header id="header" class="lp-header">
     <?php NavBar::begin(
         [
-            'brandLabel' => 'AksesPay',
+            'brandLabel' => Html::img(Url::to('@web/images/aksespay-logo.png'), [
+                'class' => 'navbar-logo',
+                'alt' => 'AksesPay',
+            ]),
             'brandUrl' => Yii::$app->homeUrl,
+            'encodeBrand' => false,
             'options' => ['class' => 'navbar-expand-lg navbar-dark fixed-top lp-navbar']
         ],
     ); ?>

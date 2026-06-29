@@ -90,22 +90,14 @@ a {
     color: var(--lp-text);
     display: inline-flex;
     font-weight: 900;
+    padding: 0;
 }
 
-.navbar-brand::before {
-    align-items: center;
-    background: linear-gradient(135deg, var(--lp-primary), var(--lp-secondary));
-    border-radius: 14px;
-    box-shadow: 0 0 32px rgba(109, 91, 255, .38);
-    color: #fff;
-    content: "LP";
-    display: inline-flex;
-    font-size: .78rem;
-    font-weight: 800;
-    height: 38px;
-    justify-content: center;
-    margin-right: .55rem;
-    width: 38px;
+.navbar-logo {
+    display: block;
+    height: 42px;
+    object-fit: contain;
+    width: auto;
 }
 
 .lp-search {

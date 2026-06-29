@@ -100,6 +100,13 @@ a {
     width: auto;
 }
 
+.lp-footer-logo {
+    display: block;
+    height: 42px;
+    object-fit: contain;
+    width: auto;
+}
+
 .lp-search {
     align-items: center;
     background: rgba(30, 41, 59, .72);
@@ -1079,7 +1086,6 @@ a {
         linear-gradient(90deg, rgba(15, 23, 42, .98), rgba(15, 23, 42, .82), rgba(15, 23, 42, .54)),
         var(--game-cover) center / cover no-repeat;
     background-repeat: no-repeat;
-    border-bottom: 1px solid var(--lp-border);
     margin-top: -1rem;
     padding: 2rem 0;
 }

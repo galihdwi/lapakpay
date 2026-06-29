@@ -5,6 +5,7 @@ declare(strict_types=1);
 /** @var yii\web\View $this */
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 ?>
 <footer id="footer" class="lp-footer">
@@ -12,8 +13,10 @@ use yii\helpers\Html;
         <div class="row g-4">
             <div class="col-lg-4">
                 <div class="d-flex align-items-center gap-2 mb-3">
-                    <span class="brand-mark">AP</span>
-                    <strong class="text-white">AksesPay</strong>
+                    <?= Html::img(Url::to('@web/images/aksespay-logo.png'), [
+                        'class' => 'lp-footer-logo',
+                        'alt' => 'AksesPay',
+                    ]) ?>
                 </div>
                 <p class="lp-muted mb-3">Topup game, PPOB, dan streaming premium dengan proses otomatis, pembayaran aman, dan dukungan reseller.</p>
                 <p class="lp-footer-address mb-3">Jl. Gadang VI No 6 Kec. Sukun Kel Gadang Malang, Jawa Timur 65149</p>

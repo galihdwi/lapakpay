@@ -316,7 +316,6 @@ a {
     text-align: center;
 }
 
-.category-card,
 .product-card,
 .flash-panel,
 .game-info-panel,
@@ -332,13 +331,16 @@ a {
 }
 
 .category-card {
+    background: linear-gradient(180deg, rgba(30, 41, 59, .86), rgba(17, 28, 51, .86));
+    border-radius: var(--lp-radius-md);
+    box-shadow: 0 12px 32px rgba(2, 6, 23, .22);
     color: var(--lp-text);
     min-height: 122px;
     overflow: hidden;
     padding: .9rem;
     position: relative;
     text-decoration: none;
-    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    transition: transform .18s ease, box-shadow .18s ease;
 }
 
 .category-card-image {
@@ -367,7 +369,6 @@ a {
 }
 
 .category-card:hover {
-    border-color: rgba(139, 123, 255, .72);
     box-shadow: 0 16px 46px rgba(109, 91, 255, .24);
     transform: scale(1.03);
 }

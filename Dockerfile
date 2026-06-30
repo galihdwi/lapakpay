@@ -19,7 +19,8 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
-RUN docker-php-ext-install gd pdo pdo_mysql bcmath
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install gd pdo pdo_mysql bcmath
 
 # Install MongoDB PHP driver for external MongoDB connections.
 # This image does not run a MongoDB server internally; configure MONGODB_DSN,
